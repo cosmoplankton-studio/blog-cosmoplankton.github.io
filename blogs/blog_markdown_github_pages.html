@@ -20,8 +20,6 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="../favicon.svg">
-        
         
         <link rel="shortcut icon" href="../favicon.png">
         
@@ -170,7 +168,7 @@
 Obviously, depending on your needs you could always use a freemium blogging or long form newsletter platform e.g. <a href="https://medium.com/">Medium</a>, <a href="https://ghost.org/">Ghost</a>, <a href="https://www.getrevue.co/">Twitter Revue</a>, <a href="https://substack.com/">Substack</a>, <a href="https://wordpress.com/">Wordpress</a>, <a href="https://stackoverflow.com/questions/4750520/git-branch-gh-pages">Auto-generated GitHub Pages</a>, etc. But, what we are going to discuss here has some advantages if you are predominantly working on technical articles those involve code, most importantly testable working code.</p>
 <p>There are multiple ways to create a blog from <em>Markdown</em> files, here we will look into how to use <a href="https://github.com/rust-lang/mdBook">mdBook</a> and <a href="https://pages.github.com/">GitHub Pages</a>. <em>mdBook</em> is also available as a <a href="https://www.rust-lang.org/">Rust</a> crate, so if you are an application developer you could embed <em>mdBook</em> into your apps. <em>mdBook</em> has a great default responsive theme with multiple color schemes and also allows you to customize the theme very easily. <em>mdBook</em> is currently being used to generate the official docs and online books for a lot of <em>Rust</em> crates, so we could expect it to have long term support from the <em>Rust</em> community.</p>
 <p>So let's start, you could watch the hands-on video recording and then follow the detailed steps below:</p>
-<div class="youtubeVideoWrapper"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/wUfjmGYmWK8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div class="youtubeVideoWrapper"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/CpvLrMSaf2g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 <h2><a class="header" href="#environment-setup" id="environment-setup">Environment setup</a></h2>
 <p>We will use <em>Windows Subsystem For Linux (wsl2)</em> with <em>Visual Studio Code</em> for our development environment and IDE, this way you could follow the steps and commands irrespective of whether you are on <em>Linux</em> or <em>Windows</em>.</p>
 <ul>
@@ -436,21 +434,6 @@ git worktree remove /tmp/book
 
         </div>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3031/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         

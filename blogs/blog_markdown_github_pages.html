@@ -1,0 +1,484 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js dark">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Create a Blog using Markdown files and GitHub Pages - Cosmo Drift - A Cosmoplankton Blog</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        <!-- Custom HTML head: Twitter support -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../theme/css/additional.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "dark";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('dark')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/2021.html">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../blogs/blog_markdown_github_pages.html" class="active">Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Cosmo Drift - A Cosmoplankton Blog</h1>
+
+                    <div class="right-buttons">
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#how-to-create-a-blog-from-markdown-files-and-publish-it-using-github-pages" id="how-to-create-a-blog-from-markdown-files-and-publish-it-using-github-pages">How to Create a Blog from Markdown files and publish it using GitHub Pages</a></h1>
+<p><a href=""><img src="https://img.shields.io/badge/01--FEB--2021-c5c5c5.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/BEGINNER-9cf.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/BY:-1da1f2.svg" alt="" /></a>
+<a href="https://twitter.com/cosmoplankton?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @cosmoplankton</a></p>
+<p>We come across a large number of documentations, blogs, and technical articles which are auto generated from <em>Markdown</em> files. <em>Markdown</em> files are easy to edit, most IDEs and code editors support <em>Markdown</em> preview, and it is a valuable language to learn which is a professional asset if you are a developer, a technical writer, or a tech-blogger.
+Obviously, depending on your needs you could always use a freemium blogging or long form newsletter platform e.g. <a href="https://medium.com/">Medium</a>, <a href="https://ghost.org/">Ghost</a>, <a href="https://www.getrevue.co/">Twitter Revue</a>, <a href="https://substack.com/">Substack</a>, <a href="https://wordpress.com/">Wordpress</a>, <a href="https://stackoverflow.com/questions/4750520/git-branch-gh-pages">Auto-generated GitHub Pages</a>, etc. But, what we are going to discuss here has some advantages if you are predominantly working on technical articles those involve code, most importantly testable working code.</p>
+<p>There are multiple ways to create a blog from <em>Markdown</em> files, here we will look into how to use <a href="https://github.com/rust-lang/mdBook">mdBook</a> and <a href="https://pages.github.com/">GitHub Pages</a>. <em>mdBook</em> is also available as a <a href="https://www.rust-lang.org/">Rust</a> crate, so if you are an application developer you could embed <em>mdBook</em> into your apps. <em>mdBook</em> has a great default responsive theme with multiple color schemes and also allows you to customize the theme very easily. <em>mdBook</em> is currently being used to generate the official docs and online books for a lot of <em>Rust</em> crates, so we could expect it to have long term support from the <em>Rust</em> community.</p>
+<p>So let's start, you could watch the hands-on video recording and then follow the detailed steps below:</p>
+<div class="youtubeVideoWrapper"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/wUfjmGYmWK8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<h2><a class="header" href="#environment-setup" id="environment-setup">Environment setup</a></h2>
+<p>We will use <em>Windows Subsystem For Linux (wsl2)</em> with <em>Visual Studio Code</em> for our development environment and IDE, this way you could follow the steps and commands irrespective of whether you are on <em>Linux</em> or <em>Windows</em>.</p>
+<ul>
+<li>Make sure you have <em>wsl2</em> on your <em>Windows</em> system and then Install an <em>Ubuntu LTS (e.g. 20.04)</em> distribution for <em>wsl2</em>. <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Steps to enable wsl2 and install a Linux distribution.</a></li>
+<li>Install <em>Visual Studio Code</em> on your <em>Windows</em> host. <a href="https://code.visualstudio.com/">Steps to install Code.</a></li>
+</ul>
+<p>In <em>Windows</em> host system:</p>
+<pre><code class="language-sh">#  Open Windows command prompt to enable wsl2 and
+#  install a Linux distribution from Windows Store (e.g. Ubuntu-20.04 LTS)
+wsl --help
+# List available Linux distributions
+wsl --list
+# Launch the Linux VM with specific user
+wsl --distribution Ubuntu-20.04 --user your_username_in_wsl
+</code></pre>
+<p>In <em>Linux</em> VM:</p>
+<pre><code class="language-sh"># We are logged into our Linux VM, go to user home directory
+cd ~
+# Install Cargo and Rust.
+sudo apt update &amp;&amp; sudo apt upgrade
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo --version
+rustc --version
+# Install mdBook and the mdBook-linkcheck (optional) plugin
+cargo install mdbook
+cargo install mdbook-linkcheck
+mdbook --version
+mdbook-linkcheck --version
+</code></pre>
+<ul>
+<li><a href="https://www.rust-lang.org/tools/install">Rust and Cargo installation steps using rustup.</a></li>
+<li><a href="https://rust-lang.github.io/mdBook/index.html">mdBook setup and installation documentation.</a></li>
+</ul>
+<h2><a class="header" href="#repository-setup" id="repository-setup">Repository setup</a></h2>
+<p>First create an empty GitHub public repository &quot;e.g. blog-example.github.io&quot;</p>
+<p>In <em>Linux</em> VM:</p>
+<pre><code class="language-sh"># Make sure we are in user home
+cd ~
+# Create and enter a repos directory
+mkdir repos &amp;&amp; cd $_
+# Create a directory for our repo
+mkdir blog-example.github.io &amp;&amp; cd $_
+# Initialize git
+git init
+# Launch Visual Studio Code
+# This will launch Code on the host machine with a remote connection to the Linux VM
+code .
+</code></pre>
+<h2><a class="header" href="#create-the-blog" id="create-the-blog">Create the Blog</a></h2>
+<p>Now we will work mostly in the IDE - <em>Visual Studio Code.</em> You could keep the <em>Code Terminal</em> open or toggle its visibility using <code>CTRL+`</code> as per your choice.</p>
+<p>In <em>Code Terminal</em>:</p>
+<pre><code class="language-sh"># Make sure we are in our repository directory
+cd ~/repos/blog-example.github.io
+# Initialize mdBook, this will create the essential files and directory structure.
+mdbook init --theme
+# Below command will build and serve the blog on localhost.
+mdbook serve --port 3031
+# Below is the output of the serve command in the Terminal. CTRL+Click on the 
+# http://localhost:3031 link, this will open the blog on your host machines browser.
+2021-02-01 11:31:36 [INFO] (mdbook::book): Book building has started
+2021-02-01 11:31:36 [INFO] (mdbook::book): Running the html backend
+2021-02-01 11:31:37 [INFO] (mdbook::cmd::serve): Serving on: http://localhost:3031
+2021-02-01 11:31:37 [INFO] (warp::server): Server::run; addr=127.0.0.1:3031
+2021-02-01 11:31:37 [INFO] (warp::server): listening on http://127.0.0.1:3031 
+2021-02-01 11:31:37 [INFO] (mdbook::cmd::watch): Listening for changes...
+# press CTRL+C to stop the server
+</code></pre>
+<ul>
+<li>
+<p>We are passing the &quot;--theme&quot; option so that it creates a local <em>theme</em> folder in our repository. This way to customize the theme we could edit these files, and also add new files here. We would look into some of those customizations as we move along, for details regarding all the customization options available you could refer to the <a href="https://rust-lang.github.io/mdBook/format/theme/index.html">mdBook theme customization documentation.</a></p>
+</li>
+<li>
+<p><strong>NOTE</strong>: It is recommended to delete the files those you are not editing in the <em>theme</em> folder, only keep the files you edited. This way <em>mdBook</em> will always take the latest default files from its global theme directory and only the customization files from your repository's local <em>theme</em> directory.</p>
+</li>
+</ul>
+<h2><a class="header" href="#create-the-first-blog-post" id="create-the-first-blog-post">Create the first Blog Post</a></h2>
+<p>Below is the default file structure that gets created, only the important files are shown you could explore and check the documentation for the rest. Now we will modify some of these files and add new files to create and customize our first blog post.</p>
+<pre><code class="language-sh">blog-example.github.io
+    |__ book    # output directory with the generated static website
+    |__ src     # main source directory, our blog contents (*.md) go here
+    |   |__ chapter_1.md # default generated file, rename to homepage.md
+    |   |__ SUMMARY.md   # main file defining the structure of our blog
+    |   |__ blogs   # new directory gets created to put all our blogs
+    |       |__ our_first_example_blog.md # new file gets created for first post
+    |
+    |__ theme   # the local theme folder, edit or add files to customize theme
+    |   |__ css
+    |   |   |__ additional.css # new file we added to add some custom css
+    |   |   |__ ...
+    |   |__ head.hbs   # new file we added to append extra items to &lt;html&gt;&lt;head&gt;
+    |   |__ index.hbs  # default generated index template, entry point
+    |   |__ ...
+    |__ book.toml   # configuration file of our blog
+    |__ ... # default generated files not shown here for clarity
+
+</code></pre>
+<p><code>book.toml</code> and <code>SUMMARY.md</code> are the most imprtant configuration files, rest of the files could remain in their default states.</p>
+<p>Lets edit <code>book.toml</code>:</p>
+<pre><code class="language-diff">[book]
+authors = [&quot;cosmoplankton&quot;]
+language = &quot;en&quot;
+multilingual = false
+src = &quot;src&quot;
+title = &quot;Example Blog&quot;
+
++ [output.html]
++ additional-css = [&quot;theme/css/additional.css&quot;,]
++ additional-js = []
++ default-theme = &quot;dark&quot;
++ preferred-dark-theme = &quot;ayu&quot;
++ no-section-label = true
++ site-url = &quot;/&quot;
++ cname = &quot;blog.cosmoplankton.studio&quot;
+
++ [output.html.print]
++ enable = false
+
++ [output.html.fold]
++ enable = true
++ level = 0
+</code></pre>
+<ul>
+<li>We added <code>additional.css</code> where we would add our custom css.</li>
+<li>We changed the default theme to <code>dark</code> from <code>light</code>.</li>
+<li>We changed <code>no-section-label</code> to <code>true</code> as we don't want the blogs to be numbered in the sidebar.</li>
+<li>We disabled the <code>print</code> icon. Yu could enable if you want.</li>
+<li>We enabled section folding in the sidebar.</li>
+<li>We add the <code>cname</code> field if we wish to publish to GitHub Pages using a custom domain.</li>
+<li>Refer to <a href="https://rust-lang.github.io/mdBook/format/config.html">configuration docs</a> for more details on all the available fields.</li>
+</ul>
+<p>Lets edit <code>SUMMARY.md</code>:</p>
+<pre><code class="language-diff"># Summary
+
+- - [Chapter 1](./chapter_1.md)
++ [Example Blog - Home](./homepage.md)
++ - [First Example Blog Post](./blogs/our_first_example_blog.md)
+</code></pre>
+<ul>
+<li>We renamed the <code>chapter_1.md</code> file to <code>homepage.md</code></li>
+<li>We added the entry for our first blog post.</li>
+<li>Running <code>mdbook build</code> or <code>mdbook serve</code> will create the new <code>blogs</code> directory and the <code>our_first_example_blog.md</code> file for us.</li>
+</ul>
+<p>Create <code>head.hbs</code> in the <code>theme</code> directory with the below content:</p>
+<pre><code class="language-html">&lt;!-- Content here gets appended to the &lt;html&gt;&lt;head&gt; of all the pages --&gt;
+&lt;!-- Custom HTML head: Twitter support --&gt;
+&lt;script async src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Create <code>additional.css</code> in the <code>theme/css</code> directory with the below content:</p>
+<pre><code class="language-css">/* You could add your additional css here e.g. styling
+for embeded content in the Markdown (*.md) files */
+.youtubeVideoWrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+}
+.youtubeVideoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+</code></pre>
+<p>Let's add content to our first blog post, edit <code>our_first_example_blog.md</code>:</p>
+<pre><code class="language-diff">+ # Example First Blog Post
++ Here is some text. Here is some more text. wow!
+
++ Here is a list of items:
++ * Item A
++ * Item B
+
++ Here is some code sample:
++ ```js
++ console.log('Hello, World!');
++ ```
+
++ Here is an emebeded youtube video:
++ &lt;div class=&quot;youtubeVideoWrapper&quot;&gt;
++   &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; + autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
++ &lt;/div&gt;
+</code></pre>
+<p>Let's add our first blog post to the home page, edit <code>homepage.md</code>:</p>
+<pre><code class="language-diff">+ # Example Blog - Home
++ Hello! welcome to our blog, here are the posts:
++ 
++ - [Fisrt Blog Post](/blogs/our_first_example_blog.html)
+
+</code></pre>
+<p>In future to add new blog posts you just need to add the new post to <code>SUMMARY.md</code>, run <code>mdbook build</code>, and then add content to the newly created <em>Markdown</em> file in <code>/blogs</code> directory.</p>
+<h2><a class="header" href="#publish-to-github-pages" id="publish-to-github-pages">Publish to GitHub Pages</a></h2>
+<p>The generated blog in the <code>book</code> directory is a static website, so using GitHub Pages is not mandatory. You could publish it using any other service like <a href="https://about.gitlab.com/">GitLab Pages</a>, <a href="https://www.netlify.com/">Netlify</a>, <a href="https://aws.amazon.com/amplify/">AWS</a>, etc.</p>
+<pre><code class="language-sh"># Make sure we are in our repository directory
+cd ~/repos/blog-example.github.io
+# Check status of git repo, add new files, and commit
+git status
+git add -A
+git commit -m &quot;new log added to dev-source&quot;
+git branch -m main
+# Add the GitHub repository as a remote and push your changes
+# NOTE: you might have to setup you GitHub access token
+git remote add github &lt;HTTPS_GITHUB_URL&gt;
+git push github main
+# deploy the static site to GitHub Pages
+git checkout -b gh-pages
+git checkout main
+git worktree add /tmp/book gh-pages
+git worktree list
+mdbook build
+rm -rf /tmp/book/*
+cp -rp book/* /tmp/book/
+pushd /tmp/book
+git add -A
+git commit 'new blog deployed'
+git push github gh-pages
+popd
+git worktree remove /tmp/book
+</code></pre>
+<ul>
+<li>We have two branches, <code>main</code> for development source and <code>gh-pages</code> for deployment.</li>
+<li>Make sure <code>gh-pages</code> is the branch for GitHub Pages in your <a href="https://docs.github.com/en/github/working-with-github-pages/getting-started-with-github-pages"><em>Settings</em> at GitHub</a></li>
+<li><em>GitHub Pages</em> also allows to serve a static site from a repository sub-folder, if you want you could publish that way as well.</li>
+</ul>
+<p>That is all, if you go to the published web-address available in your <em>GitHub</em> repository <em>Settings</em> section the site will be live.</p>
+<blockquote>
+<p>If you liked this article and are interested in more similar articles, please connect on <a href="https://twitter.com/intent/user?user_id=328737190">Twitter</a> and <a href="https://www.youtube.com/channel/UCv1uDLx-BVMPGG8qQIaxnhA?sub_confirmation=1">YouTube</a> for updates. Thank you!</p>
+</blockquote>
+<h3><a class="header" href="#references-and-external-articles" id="references-and-external-articles">References and External Articles:</a></h3>
+<ul>
+<li><a href="https://github.com/rust-lang/mdBook">mdBook online documentation</a></li>
+<li><a href="https://pages.github.com/">GitHub Pages</a></li>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
+<li><a href="https://docs.microsoft.com/en-us/windows/wsl/compare-versions">Comparing WSL1 and WSL2</a></li>
+<li><a href="https://css-tricks.com/fluid-width-video/">Responsive embeded video wrappers</a></li>
+<li><a href="https://git-scm.com/docs/git-worktree">Git worktree workflow</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../blogs/2021.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../blogs/2021.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3031/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

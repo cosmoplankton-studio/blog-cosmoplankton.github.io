@@ -164,8 +164,8 @@
 <a href=""><img src="https://img.shields.io/badge/BEGINNER-9cf.svg" alt="" /></a>
 <a href=""><img src="https://img.shields.io/badge/BY:-1da1f2.svg" alt="" /></a>
 <a href="https://twitter.com/cosmoplankton?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @cosmoplankton</a></p>
-<p>We come across a large number of documentations, blogs, and technical articles which are auto generated from <em>Markdown</em> files. <em>Markdown</em> files are easy to edit, most IDEs and code editors support <em>Markdown</em> preview, and it is a valuable language to learn which is a professional asset if you are a developer, a technical writer, or a tech-blogger.
-Obviously, depending on your needs you could always use a freemium blogging or long form newsletter platform e.g. <a href="https://medium.com/">Medium</a>, <a href="https://ghost.org/">Ghost</a>, <a href="https://www.getrevue.co/">Twitter Revue</a>, <a href="https://substack.com/">Substack</a>, <a href="https://wordpress.com/">Wordpress</a>, <a href="https://stackoverflow.com/questions/4750520/git-branch-gh-pages">Auto-generated GitHub Pages</a>, etc. But, what we are going to discuss here has some advantages if you are predominantly working on technical articles those involve code, most importantly testable working code.</p>
+<p>We come across a large number of documentation, blogs, and technical articles which are auto-generated from <em>Markdown</em> files. <em>Markdown</em> files are easy to edit, most IDEs and code editors support <em>Markdown</em> preview, and it is a valuable language to learn which is a professional asset if you are a developer, a technical writer, or a tech-blogger.
+Obviously, depending on your needs you could always use a freemium blogging or long-form newsletter platform e.g. <a href="https://medium.com/">Medium</a>, <a href="https://ghost.org/">Ghost</a>, <a href="https://www.getrevue.co/">Twitter Revue</a>, <a href="https://substack.com/">Substack</a>, <a href="https://wordpress.com/">Wordpress</a>, <a href="https://stackoverflow.com/questions/4750520/git-branch-gh-pages">Auto-generated GitHub Pages</a>, etc. But, what we are going to discuss here has some advantages if you are predominantly working on technical articles those involve code, most importantly testable working code.</p>
 <p>There are multiple ways to create a blog from <em>Markdown</em> files, here we will look into how to use <a href="https://github.com/rust-lang/mdBook">mdBook</a> and <a href="https://pages.github.com/">GitHub Pages</a>. <em>mdBook</em> is also available as a <a href="https://www.rust-lang.org/">Rust</a> crate, so if you are an application developer you could embed <em>mdBook</em> into your apps. <em>mdBook</em> has a great default responsive theme with multiple color schemes and also allows you to customize the theme very easily. <em>mdBook</em> is currently being used to generate the official docs and online books for a lot of <em>Rust</em> crates, so we could expect it to have long term support from the <em>Rust</em> community.</p>
 <p>So let's start, you could watch the hands-on video recording and then follow the detailed steps below:</p>
 <div class="youtubeVideoWrapper"><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/CpvLrMSaf2g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
@@ -265,8 +265,8 @@ mdbook serve --port 3031
     |__ ... # default generated files not shown here for clarity
 
 </code></pre>
-<p><code>book.toml</code> and <code>SUMMARY.md</code> are the most imprtant configuration files, rest of the files could remain in their default states.</p>
-<p>Lets edit <code>book.toml</code>:</p>
+<p><code>book.toml</code> and <code>SUMMARY.md</code> are the most important configuration files, rest of the files could remain in their default states.</p>
+<p>Let's edit <code>book.toml</code>:</p>
 <pre><code class="language-diff">[book]
 authors = [&quot;cosmoplankton&quot;]
 language = &quot;en&quot;
@@ -299,7 +299,7 @@ title = &quot;Example Blog&quot;
 <li>We add the <code>cname</code> field if we wish to publish to GitHub Pages using a custom domain.</li>
 <li>Refer to <a href="https://rust-lang.github.io/mdBook/format/config.html">configuration docs</a> for more details on all the available fields.</li>
 </ul>
-<p>Lets edit <code>SUMMARY.md</code>:</p>
+<p>Let's edit <code>SUMMARY.md</code>:</p>
 <pre><code class="language-diff"># Summary
 
 - - [Chapter 1](./chapter_1.md)
@@ -352,7 +352,7 @@ for embeded content in the Markdown (*.md) files */
 </code></pre>
 <p>Let's add our first blog post to the home page, edit <code>homepage.md</code>:</p>
 <pre><code class="language-diff">+ # Example Blog - Home
-+ Hello! welcome to our blog, here are the posts:
++ Hello! Welcome to our blog, here are the posts:
 + 
 + - [Fisrt Blog Post](/blogs/our_first_example_blog.html)
 
@@ -362,7 +362,7 @@ for embeded content in the Markdown (*.md) files */
 <p>The generated blog in the <code>book</code> directory is a static website, so using GitHub Pages is not mandatory. You could publish it using any other service like <a href="https://about.gitlab.com/">GitLab Pages</a>, <a href="https://www.netlify.com/">Netlify</a>, <a href="https://aws.amazon.com/amplify/">AWS</a>, etc.</p>
 <pre><code class="language-sh"># Make sure we are in our repository directory
 cd ~/repos/blog-example.github.io
-# Check status of git repo, add new files, and commit
+# Check status of the git repo, add new files and commit
 git status
 git add -A
 git commit -m &quot;new log added to dev-source&quot;
@@ -381,7 +381,7 @@ rm -rf /tmp/book/*
 cp -rp book/* /tmp/book/
 pushd /tmp/book
 git add -A
-git commit 'new blog deployed'
+git commit -m 'new blog deployed'
 git push github gh-pages
 popd
 git worktree remove /tmp/book
@@ -391,7 +391,7 @@ git worktree remove /tmp/book
 <li>Make sure <code>gh-pages</code> is the branch for GitHub Pages in your <a href="https://docs.github.com/en/github/working-with-github-pages/getting-started-with-github-pages"><em>Settings</em> at GitHub</a></li>
 <li><em>GitHub Pages</em> also allows to serve a static site from a repository sub-folder, if you want you could publish that way as well.</li>
 </ul>
-<p>That is all, if you go to the published web-address available in your <em>GitHub</em> repository <em>Settings</em> section the site will be live.</p>
+<p>That is all if you go to the published web-address available in your <em>GitHub</em> repository <em>Settings</em> section the site will be live.</p>
 <blockquote>
 <p>If you liked this article and are interested in more similar articles, please connect on <a href="https://twitter.com/intent/user?user_id=328737190">Twitter</a> and <a href="https://www.youtube.com/channel/UCv1uDLx-BVMPGG8qQIaxnhA?sub_confirmation=1">YouTube</a> for updates. Thank you!</p>
 </blockquote>
@@ -436,6 +436,23 @@ git worktree remove /tmp/book
 
         
 
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'G-XL7H6RCYXN', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
         
 
         

@@ -12,6 +12,16 @@
         <!-- Custom HTML head: Twitter support -->
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+<!-- Custom HTML head: Google Analytics support -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XL7H6RCYXN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XL7H6RCYXN');
+</script>
 
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -203,23 +213,6 @@
 
         
 
-        
-        <!-- Google Analytics Tag -->
-        <script type="text/javascript">
-            var localAddrs = ["localhost", "127.0.0.1", ""];
-
-            // make sure we don't activate google analytics if the developer is
-            // inspecting the book locally...
-            if (localAddrs.indexOf(document.location.hostname) === -1) {
-                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-                ga('create', 'G-XL7H6RCYXN', 'auto');
-                ga('send', 'pageview');
-            }
-        </script>
         
 
         

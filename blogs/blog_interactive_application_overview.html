@@ -148,7 +148,7 @@
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this blog ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -181,7 +181,7 @@
 <ul>
 <li>A design application e.g. <a href="https://www.onshape.com/">Onshape</a>, <a href="https://www.figma.com/">Figma</a>, <a href="https://procreate.art/">Procreate</a>, etc.</li>
 <li>A game or an app built using a game engine e.g. <a href="https://www.unrealengine.com/en-US/">Unreal</a>, <a href="https://o3de.org/">O3DE</a>, <a href="https://www.ea.com/frostbite/engine">Frostbite</a>, <a href="https://unity.com/">Unity</a>, etc.</li>
-<li>A high resolution volume explorer or data viewer with streaming out-of-core rendering e.g. <a href="https://www.paraview.org/">Paraview</a>, <a href="https://www.allencell.org/pathtrace-rendering.html">AGAVE</a>, etc.</li>
+<li>A high resolution volume explorer or data viewer with streaming out-of-core rendering e.g. <a href="https://www.paraview.org/">Paraview</a>, <a href="https://www.allencell.org/pathtrace-rendering.html">AGAVE</a>, <a href="https://voluba.apps.hbp.eu/#/">HBP-voluba</a>, etc.</li>
 </ul>
 <p>An <code>architectural concept</code> is a software development paradigm that guides the design and implementation of the application module(s). A module is a sub-system of an application that serves a specific functionality within that application. But, implementation of the sub-system will differ based on the application requirements and constraints of the environment in which the application will run. Here, we will discuss the various established implementation practices, the technical problems they solve, and the usability enhancements we gain.</p>
 <p>In this series, we are interested in the architecture of <em>collaborative or multiplayer</em> interactive applications. The architectural concepts we would discuss here are relevant to anyone developing an interactive application, even if they are focused on gaining expertise in any specific sub-system.</p>
@@ -204,7 +204,7 @@
 <li>Document representation could be an interchange format like Universal Scene Description (USD)<sup><a href="#references-a">a1</a></sup>. USD uses scene composition concepts like layers, prims, stage, and low latency introspectable concepts like model hierarchy, model, asset, payload, shot, etc.</li>
 <li>Document representation could be a layer-based Scenegraph that serves as the data model and also on which our checkpoint-save, auto-save<sup><a href="#references-a">a2</a></sup>, and undo-redo systems will work.</li>
 <li>Document representation could be HDF5<sup><a href="#references-a">a3-4</a></sup> or distributed<sup><a href="#references-a">a5</a></sup> data used in scientific and HPC applications.</li>
-<li>Document representation could be the Game-State and Replicated-States used in snapshot (complete and delta) serialization/marshalling in multiplayer applications.</li>
+<li>Document representation could be the World-State and Replicated-States used in snapshot (complete and delta) serialization/marshalling in multiplayer applications.</li>
 </ul>
 <blockquote>
 <h5><a class="header" href="#references-a" id="references-a">References (a):</a></h5>
@@ -223,7 +223,7 @@
 <li>Runtime data could be archetype tables<sup><a href="#references-a">b1</a></sup> or sparse-sets<sup><a href="#references-a">b2</a></sup> for an Entity-Component-System (ECS)<sup><a href="#references-a">b3-6</a></sup>.</li>
 <li>Runtime data could be the multiple views of the world: game-view, physics-view, render-view, GPUScene, etc. </li>
 <li>Runtime data could be GBuffers in deferred lighting or shading, Visibility Buffer in deferred material shading or deferred texturing pipelines, Triangle-cluster-hierarchy (cluster LOD DAG) to support streaming-based virtual geometry<sup><a href="#references-a">b7</a></sup>, low latency culling hierarchy of the LOD DAG, etc.</li>
-<li>Runtime data could be virtualized voxels/geometry in out-of-core or streaming based rendering (bioimaging data, high-resolution HPC simulation data, astronomy data, earth-observation data, etc.)<sup><a href="#references-a">b8-9</a></sup>.</li>
+<li>Runtime data could be virtualized voxels/geometry in out-of-core or streaming based rendering (bioimaging data, high-resolution HPC simulation data, astronomy data, earth-observation data, etc.)<sup><a href="#references-a">b8-10</a></sup>.</li>
 </ul>
 <p><em>NOTE: Even though some of the above structures are pre-computed during the build process we still consider them runtime data because they don't describe the data model but are just pre-computed to improve real-time performance.</em></p>
 <blockquote>
@@ -238,6 +238,7 @@
 <li><small> b7. <a href="https://advances.realtimerendering.com/s2021/Karis_Nanite_SIGGRAPH_Advances_2021_final.pdf">Nanite: A Deep Dive into Nanite Virtualized Geometry</a> </small></li>
 <li><small> b8. <a href="https://gamma.cs.unc.edu/QVDR/">Quick-VDR: Interactive View-Dependent Rendering of Massive Models</a> </small></li>
 <li><small> b9. <a href="https://github.com/BlueBrain/Brayns">BlueBrain: Brayns - Visualizer for large-scale and interactive ray-tracing of neurons</a> </small></li>
+<li><small> b10. <a href="https://github.com/FZJ-INM1-BDA/siibra-python">HBP siibra-python: Software interfaces for interacting with brain atlases</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#c-multiplayer-or-collaboration" id="c-multiplayer-or-collaboration"><strong>c. Multiplayer or Collaboration:</strong></a></h3>
@@ -289,7 +290,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li><small> d6. <a href="https://www.wihlidal.com/blog/graphics/2018-11-30-halcyon-architecture/">SEED: Halcyon Architecture Director's Cut</a> </small></li>
 <li><small> d7. <a href="https://www.wihlidal.com/projects/seed-halcyon-2/">SEED: Modern Graphics Abstractions &amp; Real-Time Ray Tracing</a> </small></li>
 <li><small> d8. <a href="https://docs.unrealengine.com/4.26/en-US/API/Runtime/RHI/">Unreal: Unreal Engine Rendering Hardware Interface</a> </small></li>
-<li><small> d9. <a href="https://developer.nvidia.com/blog/writing-portable-rendering-code-with-nvrhi/">Nvidia: Writing Portable Rendering Code with NVRHI</a> </small></li>
+<li><small> d9. <a href="https://developer.nvidia.com/blog/writing-portable-rendering-code-with-nvrhi/">NVIDIA: Writing Portable Rendering Code with NVRHI</a> </small></li>
 <li><small> d10. <a href="https://www.wihlidal.com/projects/seed-halcyon-1/">SEED: Halcyon Abstractions + Vulkan Implementation</a> </small></li>
 <li><small> d11. <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/graph/">Google: Tensorflow compute graph</a> </small></li>
 <li><small> d12. <a href="https://www.tensorflow.org/guide/graph_optimization">Google: Tensorflow graph optimization with Grappler</a> </small></li>
@@ -310,6 +311,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li>Data structure could be Graph, Array, Hash-Table, Priority-Queue, B-Tree, etc.</li>
 <li>Data structure could be the underlying storage format for the ECS archetypes or sparse sets.</li>
 <li>Algorithms could be transcoding algorithms, compression algorithms, traversal algorithms, bulk-update algorithms, etc.</li>
+<li>A critical point that needs to be understood when studying algorithms and data structures related to run-time data (e.g. compression, encoding, etc.) is that they are used to address different constraints, so are optimized for specific requirements like memory footprint, read/write bandwidth, and random/bulk access.</li>
 </ul>
 <p><em>NOTE: Data structure and algorithms are big topics, so here we are only interested in very few of those that are relevant to us in implementing our runtime-data representations, persisting our document representation, or building our systems/operators.</em></p>
 <blockquote>
@@ -341,6 +343,8 @@ The world tick could be different from the framerate of the graphics and should 
 <li><small> <a href="https://dawn.googlesource.com/dawn">Dawn: A WebGPU implementation in C++</a> </small></li>
 <li><small> <a href="https://github.com/gfx-rs/wgpu">Wgpu: A WebGPU implementation in Rust</a> </small></li>
 <li><small> <a href="https://developer.apple.com/documentation/metal/rendering_a_scene_with_deferred_lighting_in_c">Rendering a Scene with Deferred Lighting in C++</a> </small></li>
+<li><small> <a href="https://developer.nvidia.com/vulkan">NVIDIA: Vulkan Developer Hub</a> </small></li>
+<li><small> <a href="https://developer.amd.com/wordpress/media/2012/10/Depth_in-depth.pdf">AMD: Depth In-depth (HyperZ)</a> </small></li>
 </ul>
 </blockquote>
 <blockquote>
@@ -350,17 +354,6 @@ The world tick could be different from the framerate of the graphics and should 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
-                        <!-- Mobile navigation buttons -->
-                        
-                            <a rel="prev" href="../blogs/featured.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
-                        
-
-                        
-                            <a rel="next" href="../blogs/2021.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -369,16 +362,6 @@ The world tick could be different from the framerate of the graphics and should 
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
-                    <a rel="prev" href="../blogs/featured.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                
-
-                
-                    <a rel="next" href="../blogs/2021.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 

@@ -224,6 +224,7 @@
 <li>Runtime data could be the multiple views of the world: game-view, physics-view, render-view, GPUScene, etc. </li>
 <li>Runtime data could be GBuffers in deferred lighting or shading, Visibility Buffer in deferred material shading or deferred texturing pipelines, Triangle-cluster-hierarchy (cluster LOD DAG) to support streaming-based virtual geometry<sup><a href="#references-a">b7</a></sup>, low latency culling hierarchy of the LOD DAG, etc.</li>
 <li>Runtime data could be virtualized voxels/geometry in out-of-core or streaming based rendering (bioimaging data, high-resolution HPC simulation data, astronomy data, earth-observation data, etc.)<sup><a href="#references-a">b8-10</a></sup>.</li>
+<li>Runtime data could be frame-trees, property-trees, fragment-tress, etc. supporting a web browser's rendering pipeline<sup><a href="#references-a">b11</a></sup>.</li>
 </ul>
 <p><em>NOTE: Even though some of the above structures are pre-computed during the build process we still consider them runtime data because they don't describe the data model but are just pre-computed to improve real-time performance.</em></p>
 <blockquote>
@@ -239,6 +240,7 @@
 <li><small> b8. <a href="https://gamma.cs.unc.edu/QVDR/">Quick-VDR: Interactive View-Dependent Rendering of Massive Models</a> </small></li>
 <li><small> b9. <a href="https://github.com/BlueBrain/Brayns">BlueBrain: Brayns - Visualizer for large-scale and interactive ray-tracing of neurons</a> </small></li>
 <li><small> b10. <a href="https://github.com/FZJ-INM1-BDA/siibra-python">HBP siibra-python: Software interfaces for interacting with brain atlases</a> </small></li>
+<li><small> b11. <a href="https://developer.chrome.com/blog/renderingng-data-structures/">Chromium: Key data structures and their roles in RenderingNG</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#c-multiplayer-or-collaboration" id="c-multiplayer-or-collaboration"><strong>c. Multiplayer or Collaboration:</strong></a></h3>
@@ -345,6 +347,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li><small> <a href="https://developer.apple.com/documentation/metal/rendering_a_scene_with_deferred_lighting_in_c">Rendering a Scene with Deferred Lighting in C++</a> </small></li>
 <li><small> <a href="https://developer.nvidia.com/vulkan">NVIDIA: Vulkan Developer Hub</a> </small></li>
 <li><small> <a href="https://developer.amd.com/wordpress/media/2012/10/Depth_in-depth.pdf">AMD: Depth In-depth (HyperZ)</a> </small></li>
+<li><small> <a href="https://skia.org/">SKIA: The 2D Graphics Library</a> </small></li>
 </ul>
 </blockquote>
 <blockquote>

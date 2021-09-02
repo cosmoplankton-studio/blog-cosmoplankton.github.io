@@ -305,7 +305,8 @@ The world tick could be different from the framerate of the graphics and should 
 <li>Parallel programming deals with behaviors like synchronous, asynchronous, lazy-evaluation, lazy-loading, async-io, etc.</li>
 <li>Parallel programming deals with the fundamental concepts of process, operating system thread, green-thread/coroutine, channels, message-passing, shared-memory, IPC, etc.</li>
 <li>Parallel programming deals with scheduling concepts of thread-pool, job-system, task, batching, event-loop, etc.</li>
-<li>Parallel programming deals with primitives like mutex, fence, semaphore, atomics, conditional-variable, etc. </li>
+<li>Parallel programming deals with primitives like mutex, fence, semaphore, atomics, conditional-variable, future, promises, etc. </li>
+<li>In Parallel programming, parallel/concurrent components could communicate either implicitly (future-promises) or explicitly (shared-memory or message-passing).</li>
 </ul>
 <h3><a class="header" href="#f-data-structures-and-algorithms" id="f-data-structures-and-algorithms"><strong>f. Data Structures and Algorithms:</strong></a></h3>
 <p>We define <code>data structures</code> as the low-level underlying data management formats/collections used to implement our runtime-data representations or encode our document representations.</p>
@@ -321,6 +322,7 @@ The world tick could be different from the framerate of the graphics and should 
 <ul>
 <li><small> f1. <a href="https://github.com/google/flatbuffers">Google: FlatBuffers- Memory Efficient Serialization Library</a> </small></li>
 <li><small> f2. <a href="https://github.com/zeux/meshoptimizer">Meshoptimizer: Mesh optimization library that makes meshes smaller and faster to render</a> </small></li>
+<li><small> f3. <a href="http://renderingpipeline.com/2012/07/texture-compression/">Texture Compression: Block Compression</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#g-logging-and-monitoring" id="g-logging-and-monitoring"><strong>g. Logging and Monitoring:</strong></a></h3>
@@ -328,7 +330,17 @@ The world tick could be different from the framerate of the graphics and should 
 <ul>
 <li>Logging and monitoring are invaluable in figuring out the root cause of issues in a multiplayer application distributed across multiple machines and environments.</li>
 <li>Generation of crash-reports and replay-files<sup><a href="#references-d">c8</a></sup> is essential for deterministic reproduction of scenarios which in turn reduces development, iteration, testing, and maintenance cost.</li>
+<li>Reflection systems<sup><a href="#references-d">g1-4</a></sup> have various applications that include, among others, logging, tracing, and serialization. They are not general concepts like logging, so you may skip them if you are not interested.</li>
 </ul>
+<blockquote>
+<h5><a class="header" href="#references-g" id="references-g">References (g):</a></h5>
+<ul>
+<li><small> g1. <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/n4818.pdf">ISO CPP: Static Reflection in C++ TS-WG21</a> [<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0578r0.html">overview</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0590r0.pdf">proposal-1</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0385r2.pdf">proposal-2</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0194r3.html">proposal-3</a>, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0590r0.pdf">meeting-notes</a>] </small></li>
+<li><small> g2. <a href="https://github.com/CppCon/CppCon2018/blob/master/Presentations/building_a_cpp_reflection_system_in_one_weekend_using_clang_and_llvm/building_a_cpp_reflection_system_in_one_weekend_using_clang_and_llvm__arvid_gerstmann__cppcon_2018.pdf">Building a C++ Reflection System Using Clang and LLVM</a> [<a href="https://www.youtube.com/watch?v=DUiUBt-fqEY">video</a>, <a href="https://github.com/leandros/metareflect">code</a>]</small></li>
+<li><small> g3. <a href="https://docs.microsoft.com/en-us/cpp/dotnet/reflection-cpp-cli?view=msvc-160">Microsoft Docs: Reflection (C++/CLI) for .NET</a> </small></li>
+<li><small> g4. <a href="https://go.dev/blog/laws-of-reflection">Go Blog: The Laws of Reflection (Rob Pike)</a> </small></li>
+</ul>
+</blockquote>
 <p>In subsequent articles, we will discuss these concepts individually in detail.</p>
 <blockquote>
 <h5><a class="header" href="#references-additional-materials" id="references-additional-materials">References (additional materials):</a></h5>

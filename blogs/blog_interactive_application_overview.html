@@ -105,8 +105,18 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/featured.html">Featured</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html" class="active">Design and Architecture of an Interactive Application - Overview</a></li></ol></li><li class="chapter-item expanded "><a href="../blogs/2021.html">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../blogs/blog_interactive_application_overview.html" class="active">Design and Architecture of an Interactive Application - Overview</a></li><li class="chapter-item "><a href="../blogs/blog_markdown_github_pages.html">Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/featured.html">Featured</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html" class="active">Design and Architecture of an Interactive Application - Overview</a></li></ol></li><li class="chapter-item expanded "><a href="../blogs/2021.html">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_webapp_react_webassembly_rust.html">Tutorial: Create a Web App using React, Redux and WebAssembly (Rust)</a></li><li class="chapter-item expanded "><a href="../blogs/blog_interactive_application_overview.html" class="active">Design and Architecture of an Interactive Application - Overview</a></li><li class="chapter-item "><a href="../blogs/blog_markdown_github_pages.html">Tutorial: Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
             </div>
+
+            <!-- CUSTOM START: add a footer text at the bottom of the sidebar -->
+            <div id="sidebar-copyright">
+                <div id="sidebar-copyright-text">
+                    <small>© 2020-2021 Cosmoplankton.</small><br/>
+                    <small>All rights reserved.</small>
+                </div>
+            </div>
+            <!-- CUSTOM END: add a footer text at the bottom of the sidebar -->
+
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -142,6 +152,19 @@
                     <div class="right-buttons">
                         
                         
+                        <a href="https://github.com/cosmoplankton-studio" title="GitHub Home" aria-label="GitHub Home">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+
+                        <a href="https://cosmoplankton.studio" title="Studio Home" aria-label="Home url">
+                            <i>HOME</i>
+                        </a>
+
+                        <a href="https://experiments.cosmoplankton.studio" title="Experiments" aria-label="Experiments url">
+                            <i>EXPERIMENTS</i>
+                        </a>
+
                     </div>
                 </div>
 
@@ -205,6 +228,7 @@
 <li>Document representation could be a layer-based Scenegraph that serves as the data model and also on which our checkpoint-save, auto-save<sup><a href="#references-a">a2</a></sup>, and undo-redo systems will work.</li>
 <li>Document representation could be HDF5<sup><a href="#references-a">a3-4</a></sup> or distributed<sup><a href="#references-a">a5</a></sup> data used in scientific and HPC applications.</li>
 <li>Document representation could be the World-State and Replicated-States used in snapshot (complete and delta) serialization/marshalling in multiplayer applications.</li>
+<li>Document representation could be the block-graph<sup><a href="#references-a">a6</a></sup> of a collaborative workspace application, where a block defines an atomic data unit.</li>
 </ul>
 <blockquote>
 <h5><a class="header" href="#references-a" id="references-a">References (a):</a></h5>
@@ -214,33 +238,36 @@
 <li><small> a3. <a href="https://en.wikipedia.org/wiki/Hierarchical_Data_Format/">HDF5: Hierarchical Data Format.</a> </small></li>
 <li><small> a4. <a href="https://github.com/BlueBrain/HighFive">HighFive: Header-only C++ HDF5 interface.</a> </small></li>
 <li><small> a5. <a href="https://github.com/janelia-flyem/dvid">DVID: Distributed, Versioned, Image-oriented Dataservice.</a> </small></li>
+<li><small> a5. <a href="https://www.notion.so/blog/data-model-behind-notion">Notion: The data model behind Notion's flexibility</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#b-runtime-data-representation" id="b-runtime-data-representation"><strong>b. Runtime Data Representation:</strong></a></h3>
 <p>We define <code>runtime data representation</code> as a specialized structure or an in-memory database optimized for queries, updates, merges, etc. These structures could be transient or long-lived structures with sparse changes only on updates. These structures feed the application's systems or operators, which in most cases work on persistent queries. Systems/operators are computation units that encode behavior and logic. Runtime data could reside in CPU main memory (means RAM in this context, not cache or registers), GPU main memory (VRAM), or disk-backed-cache.</p>
 <ul>
 <li>Runtime data could be the acceleration structures we use for spatial queries, collision, culling, etc. e.g. Octree, Quadtree, Kd-tree, BVH, HZB/HiZ, etc.</li>
-<li>Runtime data could be archetype tables<sup><a href="#references-b">b1</a></sup> or sparse-sets<sup><a href="#references-b">b2</a></sup> for an Entity-Component-System (ECS)<sup><a href="#references-b">b3-6</a></sup>.</li>
+<li>Runtime data could be GameObjects or Actors<sup><a href="#references-b">b1</a></sup>. It is important to note that sometimes GameObjects and Actors are serializable, and some applications may use them for document representation.</li>
+<li>Runtime data could be archetype tables<sup><a href="#references-b">b2</a></sup> or sparse-sets<sup><a href="#references-b">b3</a></sup> for an Entity-Component-System (ECS)<sup><a href="#references-b">b4-7</a></sup>.</li>
 <li>Runtime data could be the multiple views of the world: game-view, physics-view, render-view, GPUScene, etc. </li>
-<li>Runtime data could be GBuffers in deferred lighting or shading, Visibility Buffer in deferred material shading or deferred texturing pipelines, Triangle-cluster-hierarchy (cluster LOD DAG) to support streaming-based virtual geometry<sup><a href="#references-b">b7</a></sup>, low latency culling hierarchy of the LOD DAG, etc.</li>
-<li>Runtime data could be virtualized voxels/geometry in out-of-core or streaming based rendering (bioimaging data, high-resolution HPC simulation data, astronomy data, earth-observation data, etc.)<sup><a href="#references-b">b8-10</a></sup>.</li>
-<li>Runtime data could be frame-trees, property-trees, fragment-trees, etc. supporting a web browser's rendering pipeline<sup><a href="#references-b">b11</a></sup>.</li>
+<li>Runtime data could be GBuffers in deferred lighting or shading, Visibility Buffer in deferred material shading or deferred texturing pipelines, Triangle-cluster-hierarchy (cluster LOD DAG) to support streaming-based virtual geometry<sup><a href="#references-b">b8</a></sup>, low latency culling hierarchy of the LOD DAG, etc.</li>
+<li>Runtime data could be virtualized voxels/geometry in out-of-core or streaming based rendering (bioimaging data, high-resolution HPC simulation data, astronomy data, earth-observation data, etc.)<sup><a href="#references-b">b9-11</a></sup>.</li>
+<li>Runtime data could be frame-trees, property-trees, fragment-trees, etc. supporting a web browser's rendering pipeline<sup><a href="#references-b">b12</a></sup>.</li>
 </ul>
 <p><em>NOTE: Even though some of the above structures are pre-computed during the build process we still consider them runtime data because they don't describe the data model but are just pre-computed to improve real-time performance.</em></p>
 <blockquote>
 <h5><a class="header" href="#references-b" id="references-b">References (b):</a></h5>
 <ul>
-<li><small> b1. <a href="https://github.com/SanderMertens/flecs">Flecs: A fast entity component system (ECS) for C &amp; C++</a> </small></li>
-<li><small> b2. <a href="https://github.com/skypjack/entt">EnTT: A fast and reliable entity component system (ECS)</a> </small></li>
-<li><small> b3. <a href="https://docs.unity3d.com/Packages/com.unity.entities@0.17/manual/index.html">Unity: Data Oriented Tech Stack and Entity Component System</a> </small></li>
-<li><small> b4. <a href="https://ajmmertens.medium.com/building-an-ecs-1-types-hierarchies-and-prefabs-9f07666a1e9d">Building an ECS #1: Types, Hierarchies, Prefabs</a> </small></li>
-<li><small> b5. <a href="https://ajmmertens.medium.com/building-an-ecs-2-archetypes-and-vectorization-fe21690805f9">Building an ECS #2: Archetypes and Vectorization</a> </small></li>
-<li><small> b6. <a href="https://bevyengine.org/learn/book/getting-started/ecs/">Bevy game engine book: Entity Component System</a> </small></li>
-<li><small> b7. <a href="https://advances.realtimerendering.com/s2021/Karis_Nanite_SIGGRAPH_Advances_2021_final.pdf">Nanite: A Deep Dive into Nanite Virtualized Geometry</a> </small></li>
-<li><small> b8. <a href="https://gamma.cs.unc.edu/QVDR/">Quick-VDR: Interactive View-Dependent Rendering of Massive Models</a> </small></li>
-<li><small> b9. <a href="https://github.com/BlueBrain/Brayns">BlueBrain: Brayns - Visualizer for large-scale and interactive ray-tracing of neurons</a> </small></li>
-<li><small> b10. <a href="https://github.com/FZJ-INM1-BDA/siibra-python">HBP siibra-python: Software interfaces for interacting with brain atlases</a> </small></li>
-<li><small> b11. <a href="https://developer.chrome.com/blog/renderingng-data-structures/">Chromium: Key data structures and their roles in RenderingNG</a> </small></li>
+<li><small> b1. <a href="https://docs.unrealengine.com/4.26/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Actors/">Unreal Engine Architecture: Actors</a> </small></li>
+<li><small> b2. <a href="https://github.com/SanderMertens/flecs">Flecs: A fast entity component system (ECS) for C &amp; C++</a> </small></li>
+<li><small> b3. <a href="https://github.com/skypjack/entt">EnTT: A fast and reliable entity component system (ECS)</a> </small></li>
+<li><small> b4. <a href="https://docs.unity3d.com/Packages/com.unity.entities@0.17/manual/index.html">Unity: Data Oriented Tech Stack and Entity Component System</a> </small></li>
+<li><small> b5. <a href="https://ajmmertens.medium.com/building-an-ecs-1-types-hierarchies-and-prefabs-9f07666a1e9d">Building an ECS #1: Types, Hierarchies, Prefabs</a> </small></li>
+<li><small> b6. <a href="https://ajmmertens.medium.com/building-an-ecs-2-archetypes-and-vectorization-fe21690805f9">Building an ECS #2: Archetypes and Vectorization</a> </small></li>
+<li><small> b7. <a href="https://bevyengine.org/learn/book/getting-started/ecs/">Bevy game engine book: Entity Component System</a> </small></li>
+<li><small> b8. <a href="https://advances.realtimerendering.com/s2021/Karis_Nanite_SIGGRAPH_Advances_2021_final.pdf">Nanite: A Deep Dive into Nanite Virtualized Geometry</a> </small></li>
+<li><small> b9. <a href="https://gamma.cs.unc.edu/QVDR/">Quick-VDR: Interactive View-Dependent Rendering of Massive Models</a> </small></li>
+<li><small> b10. <a href="https://github.com/BlueBrain/Brayns">BlueBrain: Brayns - Visualizer for large-scale and interactive ray-tracing of neurons</a> </small></li>
+<li><small> b11. <a href="https://github.com/FZJ-INM1-BDA/siibra-python">HBP siibra-python: Software interfaces for interacting with brain atlases</a> </small></li>
+<li><small> b12. <a href="https://developer.chrome.com/blog/renderingng-data-structures/">Chromium: Key data structures and their roles in RenderingNG</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#c-multiplayer-or-collaboration" id="c-multiplayer-or-collaboration"><strong>c. Multiplayer or Collaboration:</strong></a></h3>
@@ -249,7 +276,7 @@
 <li>A multiplayer application could be running in a server authoritative mode (preferred) or shared-authority mode.</li>
 <li>A collaborative application could be running a document on the server (separate worker process per document) with multiple clients communicating with the server document<sup><a href="#references-c">c1</a></sup>.</li>
 <li>A collaborative application could allow its client for offline editing and merge changes when the client comes online again.</li>
-<li>A multiplayer or collaborative application could be using UDP<sup><a href="#references-c">c3</a></sup> or TCP (http/Websocket/custom)<sup><a href="#references-c">c1, c4</a></sup> as its network transport layer. This layer provides the contract related to reliability, ordering, and fragmentation (delivery-guarantee, ordering-guarantee, packets, fragments, heartbeat, etc.)</li>
+<li>A multiplayer or collaborative application could be using UDP<sup><a href="#references-c">c3</a></sup> or TCP (<a href="https://datatracker.ietf.org/doc/html/rfc2616">Http</a>/<a href="https://datatracker.ietf.org/doc/html/rfc6455">Websocket</a>/custom)<sup><a href="#references-c">c1, c4</a></sup> as its network transport layer. This layer provides the contract related to reliability, ordering, and fragmentation (delivery-guarantee, ordering-guarantee, packets, fragments, heartbeat, etc.)</li>
 <li>A multiplayer application could be based of different network synchronization protocols<sup><a href="#references-c">c10</a></sup> like: lockstep (deterministic), rollback<sup><a href="#references-c">c2</a></sup>, snapshot-interpolation, state-synchronization<sup><a href="#references-c">c8</a></sup>, etc. and techniques like synchronized-clock, client-prediction<sup><a href="#references-c">c7</a></sup>, state-based-replication<sup><a href="#references-c">c8</a></sup>, client-commands-buffering, dirty-set-tracking, relevance and priotization, multi-execution-domains (live-domain, replay-domain), etc.</li>
 <li>A collaborative application may be using Operational Transformation(<a href="https://en.wikipedia.org/wiki/Operational_transformation">OT</a>), Conflict-free Replicated Data Type (<a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">CRDT</a>), etc. to resolve merge conflicts or delta merging. Snapshot (world state) delta updates, merging changes for multi-client editing, delta updates for auto-save, and delta updates for multilevel undo-redo are similar problems.</li>
 </ul>
@@ -278,7 +305,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li>Hybrid rendering pipelines<sup><a href="#references-d">d1</a></sup> and retained mode rendering pipelines<sup><a href="#references-d">d2, d3</a></sup> could use graph structures such as RenderingDependencyGraph<sup><a href="#references-d">d4</a></sup>, FrameGraph<sup><a href="#references-d">d5</a></sup>, or RenderGraph<sup><a href="#references-d">d6, d7</a></sup>.</li>
 <li>Similarly, simulation/computation applications could use graph structures such as ComputeGraphs<sup><a href="#references-d">d11, d12</a></sup> or OperatorChains to improve performance.</li>
 <li>The graph construction is the process through which applications define their execution pipeline and dependencies.</li>
-<li>The graph compilation stage emits command-buffers (commands, events, synchronization-points, etc.) built using abstractions also known as Render Hardware Interface (RHI)<sup><a href="#references-d">d8, d9, d10</a></sup>. The RHI would have different implementations for different infrastructure/execution-environment and takes care of local and distributed execution.</li>
+<li>The graph compilation stage emits command-buffers (commands, events, synchronization-points, etc.) built using abstractions also known as Render Hardware Interface (RHI)<sup><a href="#references-d">d8-10</a></sup> or Hardware Abstraction Layer (HAL)<sup><a href="#references-d">d13</a></sup>. The RHI/HAL would have different implementations for different infrastructure/execution-environment and takes care of local and distributed execution.</li>
 <li>The graph execution stage in the execution of the command buffers on the target machines or devices.</li>
 </ul>
 <blockquote>
@@ -296,6 +323,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li><small> d10. <a href="https://www.wihlidal.com/projects/seed-halcyon-1/">SEED: Halcyon Abstractions + Vulkan Implementation</a> </small></li>
 <li><small> d11. <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/graph/">Google: Tensorflow compute graph</a> </small></li>
 <li><small> d12. <a href="https://www.tensorflow.org/guide/graph_optimization">Google: Tensorflow graph optimization with Grappler</a> </small></li>
+<li><small> d13. <a href="https://github.com/gfx-rs/wgpu/tree/master/wgpu-hal">wgpu-hal: An explicit low-level GPU abstraction powering wgpu-core</a> </small></li>
 </ul>
 </blockquote>
 <h3><a class="header" href="#e-parallel-and-concurrent-execution" id="e-parallel-and-concurrent-execution"><strong>e. Parallel and Concurrent Execution:</strong></a></h3>
@@ -330,7 +358,7 @@ The world tick could be different from the framerate of the graphics and should 
 <ul>
 <li>Logging and monitoring<sup><a href="#references-g">g7</a></sup> are invaluable in figuring out the root cause of issues in a multiplayer application distributed across multiple machines and environments.</li>
 <li>Generation of crash-reports<sup><a href="#references-g">g1-2</a></sup> and replay-files<sup><a href="#references-c">c8</a></sup> is essential for deterministic reproduction of scenarios which in turn reduces development, iteration, testing, and maintenance cost.</li>
-<li>Reflection systems<sup><a href="#references-g">g3-6</a></sup> have various applications that include, among others, logging, tracing, and serialization. They are not general concepts like logging, so you may skip them if you are not interested.</li>
+<li>Reflection systems<sup><a href="#references-g">g3-6</a></sup> have various applications that include, among others, logging, tracing, serialization, and patching. They are not general concepts like logging, so you may skip them if you are not interested.</li>
 </ul>
 <blockquote>
 <h5><a class="header" href="#references-g" id="references-g">References (g):</a></h5>
@@ -358,7 +386,7 @@ The world tick could be different from the framerate of the graphics and should 
 <li><small> <a href="https://interplayoflight.wordpress.com/2018/09/30/readings-on-the-state-of-the-art-in-rendering/">Readings on the State of the Art in Rendering</a> </small></li>
 <li><small> <a href="https://aws.amazon.com/builders-library/">The Amazon Builders' Library</a> </small></li>
 <li><small> <a href="https://dawn.googlesource.com/dawn">Dawn: A WebGPU implementation in C++</a> </small></li>
-<li><small> <a href="https://github.com/gfx-rs/wgpu">Wgpu: A WebGPU implementation in Rust</a> </small></li>
+<li><small> <a href="https://archive.fosdem.org/2020/schedule/event/rust_webgpu/attachments/slides/3983/export/events/attachments/rust_webgpu/slides/3983/BuildingWebGPUwithRust_Fosdem2020.pdf">Wgpu: A WebGPU implementation in Rust</a> (<a href="https://github.com/gfx-rs/wgpu">code</a>) (<a href="http://mirroronet.pl/pub/mirrors/video.fosdem.org/2020/K.3.401/rust_webgpu.webm">video</a>) </small></li>
 <li><small> <a href="https://developer.apple.com/documentation/metal/rendering_a_scene_with_deferred_lighting_in_c">Rendering a Scene with Deferred Lighting in C++</a> </small></li>
 <li><small> <a href="https://developer.nvidia.com/vulkan">NVIDIA: Vulkan Developer Hub</a> </small></li>
 <li><small> <a href="https://developer.amd.com/wordpress/media/2012/10/Depth_in-depth.pdf">AMD: Depth In-depth (HyperZ)</a> </small></li>

@@ -1,0 +1,589 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js dark">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tutorial: Create a Web App using React, Redux and WebAssembly (Rust) - Cosmo Drift - A Cosmoplankton Blog</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        <!-- Custom HTML head: Twitter support -->
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<!-- Custom HTML head: Google Analytics support -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XL7H6RCYXN"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XL7H6RCYXN');
+</script>
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="../theme/css/additional.css">
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "dark";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('dark')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/featured.html">Featured</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li></ol></li><li class="chapter-item expanded "><a href="../blogs/2021.html">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../blogs/blog_webapp_react_webassembly_rust.html" class="active">Tutorial: Create a Web App using React, Redux and WebAssembly (Rust)</a></li><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li><li class="chapter-item "><a href="../blogs/blog_markdown_github_pages.html">Tutorial: Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
+            </div>
+
+            <!-- CUSTOM START: add a footer text at the bottom of the sidebar -->
+            <div id="sidebar-copyright">
+                <div id="sidebar-copyright-text">
+                    <small>© 2020-2021 Cosmoplankton.</small><br/>
+                    <small>All rights reserved.</small>
+                </div>
+            </div>
+            <!-- CUSTOM END: add a footer text at the bottom of the sidebar -->
+
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Cosmo Drift - A Cosmoplankton Blog</h1>
+
+                    <div class="right-buttons">
+                        
+                        
+                        <a href="https://github.com/cosmoplankton-studio" title="GitHub Home" aria-label="GitHub Home">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+
+                        <a href="https://cosmoplankton.studio" title="Studio Home" aria-label="Home url">
+                            <i>HOME</i>
+                        </a>
+
+                        <a href="https://experiments.cosmoplankton.studio" title="Experiments" aria-label="Experiments url">
+                            <i>EXPERIMENTS</i>
+                        </a>
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this blog ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#create-a-web-app-using-react-redux-webassembly-rust-and-webpack" id="create-a-web-app-using-react-redux-webassembly-rust-and-webpack">Create a Web App using React, Redux, WebAssembly (Rust), and webpack</a></h1>
+<p><a href=""><img src="https://img.shields.io/badge/05--SEP--2021-c5c5c5.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/INTERMEDIATE-9cf.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/BY:-1da1f2.svg" alt="" /></a>
+<a href="https://twitter.com/cosmoplankton?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @cosmoplankton</a></p>
+<h2><a class="header" href="#" id=""></a></h2>
+<p>In this tutorial, we would go through the steps to create a web app using:</p>
+<ul>
+<li>WebAssembly compiled from Rust; to perform computation and draw on the canvas.</li>
+<li>React; to build an overlay user interface on top of the canvas.</li>
+<li>Redux; to provide the store for the app.</li>
+<li>Cargo, wasm-pack, wasm-bindgen, yarn, and webpack as tools in our toolchain.</li>
+</ul>
+<p>Here, we will discuss the setup of the development environment and the bootstrap code for the different modules. We won't go into implementation details (maybe in a future article), but the complete code is available at <a href="https://github.com/cosmoplankton-studio/expt-src-cosmoplankton.github.io.git">this repository</a> for reference.</p>
+<h4><a class="header" href="#-1" id="-1"></a></h4>
+<h2><a class="header" href="#environment-setup" id="environment-setup">Environment setup</a></h2>
+<p>We will use Windows Subsystem For Linux (wsl2) with Visual Studio Code (vs-code) for the development environment and IDE. This way the steps and commands would be valid irrespective of the OS - Linux or Windows. For steps on how to set up wsl and vs-code check this earlier <a href="https://blog.cosmoplankton.studio/blogs/blog_markdown_github_pages.html">article</a>.</p>
+<pre><code class="language-sh"># start wsl from Windows Terminal
+wsl
+# create a development directory and launch VSCode
+mkdir wasm-react-redux-webapp &amp;&amp; $_
+code .
+</code></pre>
+<p>Setup git, Rust, nvm, and yarn:</p>
+<pre><code class="language-sh">git init
+git commit --allow-empty -m &quot;empty init&quot;
+git branch -m main
+git checkout -b dev
+touch README.md
+# install rustc and cargo using rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# setup node and nvm
+sudo apt update &amp;&amp; sudo apt upgrade
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+command -v nvm
+nvm ls-remote
+nvm install --lts
+nvm ls
+nvm use --lts
+npm --version
+node --version
+npm install -g yarn
+yarn set version latest
+yarn init
+</code></pre>
+<h4><a class="header" href="#-2" id="-2"></a></h4>
+<h2><a class="header" href="#repository-setup" id="repository-setup">Repository setup</a></h2>
+<p>Final repository structure of the app (all important files are shown):</p>
+<pre><code class="language-sh">wasm-react-redux-webapp
+    |__ package.json # package file with dependencies and scripts
+    |__ webpack.common.js # webpack config common to dev/prod
+    |__ webpack.dev.js # webpack development config
+    |__ webpack.prod.js # webpack production config
+    |__ static # static files those will be copied to 'dist' during build
+    |   |__ common.css # common css for the entire app
+    |   |__ ...
+    |__ app-core # webassembly module source
+    |   |__ Cargo.toml # cargo manifest file of the rust/wasm library
+    |   |__ src # rust source files of the library
+    |   |   |__ lib.rs # wasm/rust library entry point
+    |   |   |__ experiments.rs
+    |   |   |__ app_client.rs # app client class abstrating the gfx backend
+    |   |   |__ app_state.rs # static app states
+    |   |   |__ experiments
+    |   |       |__ common_utils.rs # common linear algebra functions
+    |   |       |__ webgl.rs # mod file exposing the webgl mod
+    |   |       |__ webgl # webgl folder (gl_program.rs, gl_utils.rs, gl_shader_*.rs)
+    |   |__ pkg # temp folder with the target wasm module and Js-glue
+    |
+    |__ src # web app and react-redux app source
+    |   |__ app.js # main web app entry
+    |   |__ app-ux # react-redux app folder
+    |   |   |__ store.js # redux store
+    |   |   |__ App-ux.js # react app
+    |   |   |__ ...
+    |   |__ pages # website entry-points and template files
+    |       |__ index.js # '/' entry
+    |       |__ index-template.html # '/' template
+    |       |__ webgl.js # '/webgl' entry 
+    |       |__ webgl-template.html # '/webgl' template
+    |       |__ ...
+    |__ dist # temp folder to hold the generated static site to be deployed
+
+</code></pre>
+<h4><a class="header" href="#-3" id="-3"></a></h4>
+<p>Setup webpack and the required webpack-plugins:</p>
+<pre><code class="language-sh"># 'add' commands in separate lines for better readability
+yarn add webpack --dev
+yarn add webpack-cli --dev
+yarn add webpack-dev-server --dev
+yarn add webpack-merge --dev
+yarn add html-webpack-plugin --dev
+yarn add clean-webpack-plugin --dev
+yarn add copy-webpack-plugin --dev
+yarn add html-webpack-template --dev
+yarn add @wasm-tool/wasm-pack-plugin --dev
+yarn install # just to be sure
+
+# setup webpack configs
+touch webpack.common.js webpack.dev.js webpack.prod.js
+
+# folder to place static assets that CopyWebpackPlugin() will copy to 'dist'
+mkdir static
+
+# optional commands to use at a later stage
+yarn upgrade [package]@[version] # update package
+yarn remove [package] # remove package
+</code></pre>
+<h4><a class="header" href="#-4" id="-4"></a></h4>
+<p>Edit <code>webpack.common.js</code>, <code>webpack.dev.js</code>, and <code>webpack.prod.js</code>.</p>
+<p><code>webpack.common.js</code> config file:</p>
+<pre><code class="language-js">...
+const wasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+let pages = [&quot;index&quot;, &quot;webgl&quot;, &quot;webgpu&quot;]
+let plugins = [
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+        patterns: [
+            { from: 'static' }
+        ]
+    }),
+    new wasmPackPlugin({
+        crateDirectory: path.resolve(__dirname, &quot;app-core&quot;),
+        outDir: path.resolve(__dirname, &quot;app-core/pkg&quot;),
+        outName: &quot;app-core&quot;,
+    })
+];
+plugins = plugins.concat(
+    pages.map(
+        (page) =&gt; 
+            new HtmlWebpackPlugin({
+                template: path.resolve(__dirname, `src/pages/${page}-template.html`),
+                filename: `${page}.html`,
+                chunks: [page],
+              })
+      )
+)
+
+module.exports = {
+    mode: 'production',
+    entry: pages.reduce((config, page) =&gt; {
+        config[page] = path.resolve(__dirname, `src/pages/${page}.js`);
+        return config;
+      }, {}),
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        devtoolNamespace: 'devtool-namespace'
+    },
+    plugins: plugins,
+    experiments: {
+        syncWebAssembly: true,
+    },
+    module: {
+        rules: [
+            ...
+        ]
+    },
+    ...
+};
+
+</code></pre>
+<p><code>webpack.dev.js</code> config file:</p>
+<pre><code class="language-js">...
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+    mode: 'development',
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        port: 3033,
+        host: '0.0.0.0',
+    },
+});
+</code></pre>
+<p><code>webpack.prod.js</code> config file:</p>
+<pre><code class="language-js">...
+module.exports = merge(common, {
+    mode: 'production',
+    devtool: 'source-map',
+    output: {
+        filename: '[name].bundle.js',
+    },
+});
+</code></pre>
+<h4><a class="header" href="#-5" id="-5"></a></h4>
+<p>Setup react, redux, primer, and entry pages:</p>
+<pre><code class="language-sh"># setup react, redux, dependencies
+yarn add --dev @babel/core @babel/preset-env @babel/preset-react
+yarn add --dev babel-loader
+yarn add --dev style-loader css-loader
+yarn add react react-dom react-is
+yarn add react-redux @reduxjs/toolkit
+yarn add @primer/components styled-components
+
+# create all the files and folders
+mkdir src &amp;&amp; $_
+touch app.js
+mkdir pages &amp;&amp; $_
+touch index.js webgl.js webgpu.js
+touch index-template.html webgl-template.html webgpu-template.html
+cd .. # back to repo-root
+mkdir app-ux &amp;&amp; $_
+touch store.js App-ux.js
+mkdir reducers &amp;&amp; $_
+touch toolbarReducer.js globalReducer.js
+cd ../../.. # back to repo-root
+</code></pre>
+<h4><a class="header" href="#-6" id="-6"></a></h4>
+<p>Setup Rust and wasm module:</p>
+<pre><code class="language-sh">rustup target add wasm32-unknown-unknown # optional only once to add target if not already present
+sudo apt install build-essential  # optional dependencies if not present in wsl
+sudo apt install cmake    # optional dependencies if not present in wsl
+sudo apt install clang  # optional dependencies if not present in wsl
+
+cargo new app-core --lib
+cd app-core
+touch .gitignore # update .gitignore and the Cargo.toml manifest
+cd src
+touch experiments.rs app_client.rs app_state.rs
+mkdir experiments &amp;&amp; $_
+touch webgl.rs common_utils.rs
+mkdir wengl &amp;&amp; $_
+touch gl_program.rs gl_utils.rs gl_shader_fragment.rs gl_shader_vertex.rs
+cd ../../../..  # back to repo-root
+</code></pre>
+<h2><a class="header" href="#code-overview" id="code-overview">Code Overview</a></h2>
+<p>Overview of some of the important code blocks of the app, most of the code is simple and self-explanatory. For complete code refer to <a href="https://github.com/cosmoplankton-studio/expt-src-cosmoplankton.github.io.git">this repository</a>.</p>
+<p><code>./src/app.js</code> file:</p>
+<pre><code class="language-js">import '../static/common.css';
+import store from './app-ux/store'
+import * as appUx from './app-ux/App-ux'
+const appCore = import('../app-core/pkg/app-core');
+
+class WebApp {
+...
+    constructor(title) {...}
+    initCanvas() {...}
+    initOverlay() {...}
+    runOverlay() {...}
+    pauseUpdate(pause) {...}
+    runCanvas() {
+        appCore.then(m =&gt; {
+            ...
+            function tick() {
+                // Note: We could move this gameloop inside the wasm-module 
+                // using the 'web_sys' crate. Keeping it here so that we could 
+                // tick multiple mixed modules (js/wasm) together from here 
+                // incase it is required in the app.
+                window.requestAnimationFrame(tick);
+                ...
+                m.tick(...);
+                ...
+            }
+            tick(); // Let the Games Begin
+        });
+    }
+...
+}
+const webApp = new WebApp('cosmoplankton');
+export default webApp;
+</code></pre>
+<p><code>./src/pages/index.js</code> file:</p>
+<pre><code class="language-js">import webApp from '../app'
+webApp.initOverlay()
+webApp.runOverlay()
+</code></pre>
+<p><code>./src/pages/webgl.js</code> file:</p>
+<pre><code class="language-js">import webApp from '../app'
+webApp.initCanvas()
+webApp.initOverlay()
+webApp.runOverlay()
+webApp.runCanvas()
+</code></pre>
+<p>We could integrate a canvas with a react app in multiple ways. We could create the canvas as a react component, or we could keep the canvas separate.
+Here we prefer keeping the canvas separate from the overlay user interface for better management and communication clarity. To create the canvas as a react component, one could refer to different articles on the web like <a href="https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258">this one</a>.</p>
+<p><code>./src/pages/webgl-template.html</code> file:</p>
+<pre><code class="language-html">&lt;html&gt;
+&lt;head lang=&quot;en-US&quot;&gt;...&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;container&quot;&gt;
+        &lt;canvas id=&quot;appCanvas&quot;&gt;&lt;/canvas&gt;
+        &lt;div id=&quot;overlay&quot;&gt;
+            &lt;div&gt;
+                &lt;div id=&quot;reactApp&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><code>./src/app-ux/App-ux.js</code> file:</p>
+<pre><code class="language-js">...
+export function run(store, mount) {
+    ReactDOM.render(
+        &lt;Provider store={store}&gt;&lt;OverlayApp/&gt;&lt;/Provider&gt;,
+        mount
+    );
+  }
+
+function OverlayApp() {
+    return (
+        &lt;ThemeProvider colorMode=&quot;night&quot;&gt;
+            &lt;Router&gt;&lt;MainApp/&gt;&lt;/Router&gt;
+        &lt;/ThemeProvider&gt;
+    )
+}
+...
+</code></pre>
+<p>A detailed description of the wasm module (<code>app-core</code>) using WebGL to draw is beyond the scope of this article. We might cover those details in a separate article.</p>
+<h2><a class="header" href="#clone-and-run" id="clone-and-run">Clone and Run</a></h2>
+<p>To run the app, follow the below steps:</p>
+<pre><code class="language-sh"># Make sure you have set up the environment (nvm, Cargo, etc.)
+# git-URL: https://github.com/cosmoplankton-studio/expt-src-cosmoplankton.github.io.git
+git clone git-URL wasm-react-redux-webapp # replace the URL 
+cd wasm-react-redux-webapp
+git checkout dev
+yarn install
+# upgrade packages if necessary
+yarn upgrade [package]@[version] # optional
+# build and serve on localhost
+yarn build
+yarn serve
+</code></pre>
+<h4><a class="header" href="#-7" id="-7"></a></h4>
+<p>This application provides us with the wireframe to build more complex web apps like Figma, Sketch, Notion, Spline, etc. In future articles we would look into offline mode, webworkers, etc. The Web App is currently hosted at: <a href="https://experiments.cosmoplankton.studio/">experiments.cosmoplankton.studio</a></p>
+<h2><a class="header" href="#-8" id="-8"></a></h2>
+<blockquote>
+<p>If you liked this article and are interested in more similar articles, connect on <a href="https://twitter.com/intent/user?user_id=328737190">Twitter</a> and <a href="https://www.youtube.com/channel/UCv1uDLx-BVMPGG8qQIaxnhA?sub_confirmation=1">YouTube</a> for updates. Thank you!</p>
+</blockquote>
+<h3><a class="header" href="#references-and-external-articles" id="references-and-external-articles">References and External Articles:</a></h3>
+<ul>
+<li><a href="https://rustwasm.github.io/docs/wasm-bindgen/introduction.html">wasm-bindgen Documentation</a></li>
+<li><a href="https://rustwasm.github.io/docs/wasm-pack/">wasm-pack Documentation</a></li>
+<li><a href="https://webpack.js.org/guides/getting-started/">webpack Documentation</a></li>
+<li><a href="https://react-redux.js.org/introduction/getting-started">React-Redux Documentation</a></li>
+<li><a href="https://webglfundamentals.org/">WebGL Fundamentals</a></li>
+<li><a href="https://primer.style/react/core-concepts">Primer: GitHub's design system</a></li>
+<li><a href="https://styled-system.com/">Styled systems</a></li>
+<li><a href="https://material-components.github.io/material-components-web-catalog/#/">Material Components for Web</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

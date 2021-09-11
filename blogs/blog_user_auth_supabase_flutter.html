@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Posts from 2021 - Cosmo Drift - A Cosmoplankton Blog</title>
+        <title>Tutorial: User Authentication using Supabase Flutter (Dart) Client - Cosmo Drift - A Cosmoplankton Blog</title>
         
         
 
@@ -105,7 +105,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/featured.html">Featured</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li></ol></li><li class="chapter-item expanded "><a href="../blogs/2021.html" class="active">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_user_auth_supabase_flutter.html">Tutorial: User Authentication using Supabase Flutter (Dart) Client</a></li><li class="chapter-item "><a href="../blogs/blog_webapp_react_webassembly_rust.html">Tutorial: Create a Web App using React, Redux and WebAssembly (Rust)</a></li><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li><li class="chapter-item "><a href="../blogs/blog_markdown_github_pages.html">Tutorial: Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../homepage.html">Cosmo Drift - Home</a></li><li class="chapter-item expanded "><a href="../blogs/featured.html">Featured</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li></ol></li><li class="chapter-item expanded "><a href="../blogs/2021.html">Posts from 2021</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../blogs/blog_user_auth_supabase_flutter.html" class="active">Tutorial: User Authentication using Supabase Flutter (Dart) Client</a></li><li class="chapter-item "><a href="../blogs/blog_webapp_react_webassembly_rust.html">Tutorial: Create a Web App using React, Redux and WebAssembly (Rust)</a></li><li class="chapter-item "><a href="../blogs/blog_interactive_application_overview.html">Design and Architecture of an Interactive Application - Overview</a></li><li class="chapter-item "><a href="../blogs/blog_markdown_github_pages.html">Tutorial: Create a Blog using Markdown files and GitHub Pages</a></li></ol></li></ol>
             </div>
 
             <!-- CUSTOM START: add a footer text at the bottom of the sidebar -->
@@ -193,13 +193,83 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#posts-from-2021" id="posts-from-2021">Posts from 2021</a></h1>
+                        <h1><a class="header" href="#user-authentication-using-supabase-flutter-dart-client" id="user-authentication-using-supabase-flutter-dart-client">User Authentication using Supabase Flutter (Dart) Client</a></h1>
+<p><a href=""><img src="https://img.shields.io/badge/11--SEP--2021-c5c5c5.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/INTERMEDIATE-9cf.svg" alt="" /></a>
+<a href=""><img src="https://img.shields.io/badge/BY:-1da1f2.svg" alt="" /></a>
+<a href="https://twitter.com/cosmoplankton?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @cosmoplankton</a></p>
+<h2><a class="header" href="#" id=""></a></h2>
+<p><a href="https://supabase.io/">Supabase</a> is an open source <a href="https://firebase.google.com/">Firebase</a> alternative to create backends with a <em>Postgres Database, Authentication, instant APIs, realtime subscriptions, Storage, and Serverless (announced) functions</em>. Currently, its managed services offer a <a href="https://supabase.io/pricing">free-account</a> with limits those are enough to set up a personal project, a hobby project, or a MVP. </p>
+<p>For this tutorial we will use its community supported <a href="https://github.com/supabase/supabase-dart">dart-client</a>, you could use the official <a href="https://github.com/supabase/supabase-js">javascript-client</a> depending on your project.</p>
+<h2><a class="header" href="#create-a-supabase-project" id="create-a-supabase-project">Create a supabase project</a></h2>
+<p><img src="../static/supabase-new-project-details.JPG" alt="" />
+<em><small>Image-01: Create New Project UI. </small></em></p>
 <ul>
-<li><a href="./blog_user_auth_supabase_flutter.html#">Tutorial: User Authentication using Supabase Flutter (Dart) Client</a></li>
-<li><a href="./blog_webapp_react_webassembly_rust.html#">Tutorial: Create a Web App using React, Redux and WebAssembly (Rust)</a></li>
-<li><a href="./blog_interactive_application_overview.html#">Design and Architecture of an Interactive Application - Overview</a></li>
-<li><a href="./blog_markdown_github_pages.html#">Tutorial: Create a Blog using Markdown files and GitHub Pages</a></li>
+<li><a href="https://app.supabase.io/">Register</a> a new supabase account using your GitHub account and create a new project.</li>
+<li>A project provides us with an <code>URL</code> and a <code>PUBLIC-KEY</code> for the app client to access supabase managed backend.</li>
 </ul>
+<p><img src="../static/supabase-api-details.JPG" alt="" />
+<em><small>Image-02: API details for client. </small></em></p>
+<h2><a class="header" href="#add-supabase-client-to-the-flutter-app" id="add-supabase-client-to-the-flutter-app">Add supabase client to the Flutter app</a></h2>
+<ul>
+<li>Run <code>flutter pub add supabase</code> to add supabase <a href="https://pub.dev/packages/supabase/install">package</a> as a dependency to the Flutter project.</li>
+<li>Run <code>flutter pub get</code> to download the package (vs-code dart extension automatically runs this when you update and save the pubspec.yaml file).</li>
+</ul>
+<p>The <code>pubspec.yaml</code> file will have a line like this based on the current version:</p>
+<pre><code class="language-sh">dependencies:
+  supabase: ^0.2.5
+</code></pre>
+<ul>
+<li>Import the dart client package into the app.</li>
+<li>Go to supabase dashboard and get the <code>URL</code> and <code>PUBLIC-KEY</code> from &quot;Organization &gt; Project &gt; API Settings&quot; page (refer to <em>Image-02</em>).</li>
+<li>Create an instance of <code>SupabaseClient</code> using the <code>URL</code> and the <code>PUBLIC-KEY</code>.</li>
+</ul>
+<pre><code class="language-js">import 'package:supabase/supabase.dart';
+final client = SupabaseClient('URL', 'PUBLIC-KEY');
+</code></pre>
+<h2><a class="header" href="#register-users-using-supabase-authentication" id="register-users-using-supabase-authentication">Register users using Supabase Authentication</a></h2>
+<p>The <code>client</code> object has an <code>auth</code> attribute that provides the different auth-services: <a href="https://pub.dev/documentation/gotrue/latest/gotrue/GoTrueClient/signUp.html"><code>signUp</code></a>, <a href="https://pub.dev/documentation/gotrue/latest/gotrue/GoTrueClient/signIn.html"><code>signIn</code></a>, <a href="https://pub.dev/documentation/gotrue/latest/gotrue/GoTrueClient/update.html"><code>update</code></a>, etc.</p>
+<ul>
+<li>We use the <a href="https://pub.dev/documentation/gotrue/latest/gotrue/GoTrueClient/signUp.html"><code>signUp</code></a> service, which returns a <code>response</code> of type <a href="https://pub.dev/documentation/gotrue/latest/gotrue/GotrueSessionResponse-class.html"><code>GotrueSessionResponse</code></a>, to register a new user.</li>
+<li>Depending on the <a href="https://supabase.io/docs/reference/javascript/auth-signup#notes">auth-configuration</a>, the user might have to complete the registration process from the confirmation e-mail. </li>
+<li>Depending on the <a href="https://supabase.io/docs/reference/javascript/auth-signup#notes">auth-configuration</a> the <code>response</code> object could have both <code>user</code> and <code>session</code> or only <code>user</code>.</li>
+</ul>
+<p>The client pseudo-code:</p>
+<pre><code class="language-js">import 'package:supabase/supabase.dart';
+
+Future&lt;String&gt; signUp(String email, String password) async {
+    // Create a client instance
+    final client = SupabaseClient('supabaseUrl', 'supabaseKey');
+
+    // Sign up user with email and password
+    final response = await client
+        .auth
+        .signUp(email, password);
+
+    if (response.error != null) {
+        return 'Error: ${response.error?.message}';
+    } else {
+        final user = response.user;
+        final session = response.data;
+    }
+
+    return 'Success';
+}
+
+main() {
+    final msg = await signUp('email', 'password');
+}
+</code></pre>
+<h2><a class="header" href="#registered-users" id="registered-users">Registered Users</a></h2>
+<p>Once an user has successfully registered and confirmed the e-mail, they will show up on the Authetication page.</p>
+<p><img src="../static/supabase-email-pending-verification.JPG" alt="" />
+<em><small>Image-03: Authentication page- pending verification. </small></em></p>
+<p><img src="../static/supabase-email-verified.JPG" alt="" />
+<em><small>Image-04: Authentication page- email verified. </small></em></p>
+<h2><a class="header" href="#-1" id="-1"></a></h2>
+<blockquote>
+<p>If you liked this article and are interested in more similar articles, connect on <a href="https://twitter.com/intent/user?user_id=328737190">Twitter</a> and <a href="https://www.youtube.com/channel/UCv1uDLx-BVMPGG8qQIaxnhA?sub_confirmation=1">YouTube</a> for updates. Thank you!</p>
+</blockquote>
 
                     </main>
 

@@ -199,14 +199,14 @@
 <a href=""><img src="https://img.shields.io/badge/BY:-1da1f2.svg" alt="" /></a>
 <a href="https://twitter.com/cosmoplankton?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @cosmoplankton</a></p>
 <h3><a class="header" href="#" id=""></a></h3>
-<p>In this article we would discuss few concepts that are relevant when developing a Hybrid Web Application that uses both WebAssembly (Wasm) and Javascript (JS) or TypeScript. Specifically, we would discuss:</p>
+<p>In this article, we will discuss few concepts that are relevant for developing a Hybrid Web Application using both WebAssembly (Wasm) and Javascript (JS). Specifically, we would discuss:</p>
 <ul>
 <li><strong>JavaScript Concurrency Model</strong></li>
 <li><strong>ES Module (ECMAScript Module)</strong></li>
 <li><strong>WebAssembly Module</strong></li>
 <li><strong>Safe Message Passing and Data Access</strong></li>
 </ul>
-<p>This article is not an usage guide, but is rather focused on the concepts important to understand how these features work. However, links to usage guides are provided throughout the article for reference.</p>
+<p>This article is not a usage guide but is focused on the concepts to understand how these features work. However, links to usage guides are available throughout the article for reference.</p>
 <h2><a class="header" href="#overview" id="overview">Overview</a></h2>
 <blockquote>
 <p>&quot;<strong>ECMAScript</strong> is an object-oriented programming language for performing computations and manipulating computational objects within a host environment. ECMAScript is object-based: basic language and host facilities are provided by objects, and an ECMAScript program is a cluster of communicating objects<sup><a href="https://tc39.es/ecma262/#sec-ecmascript-overview">A1</a></sup>. In ECMAScript, an object is a collection of zero or more properties each with attributes that determine how each property can be used.&quot;</p>
@@ -214,19 +214,19 @@
 <blockquote>
 <p>&quot;<strong>WebAssembly</strong> is a virtual instruction set architecture (virtual ISA) and a binary instruction format for a stack-based virtual machine<sup><a href="https://webassembly.github.io/spec/core/intro/introduction.html#scope">A2</a></sup>.&quot;</p>
 </blockquote>
-<p>A web browser or a runtime (<a href="https://github.com/denoland/deno">Deno</a>, <a href="https://nodejs.org/">Node.js</a>, <a href="https://github.com/wasmerio/wasmer">Wasmer</a>) provides a host environment for an ECMAScript (JavaScript) or a WebAssembly program to run. To build hybrid web apps, using both JS and WebAssembly, we need to understand some of the fundamental behaviors and features provided by these host environments and the specifications of these programming languages/models. The host environment, its behaviors, and some of the features may differ based on whether the host is representing client or server. Some behaviors may differ between web browsers and runtimes like Node.js.</p>
+<p>A web browser or a runtime (<a href="https://github.com/denoland/deno">Deno</a>, <a href="https://nodejs.org/">Node.js</a>, <a href="https://github.com/wasmerio/wasmer">Wasmer</a>) provides a host environment for an ECMAScript (JavaScript) or a WebAssembly program to run. To build hybrid web apps, using both JS and WebAssembly, we need to understand some of the fundamental behaviors and features that these host environments provide and the specifications of these programming languages/models. The host environment, its behaviors, and some features may differ based on whether the host is representing a client or a server. Some behaviors may differ between web browsers and runtimes like Node.js.</p>
 <h2><a class="header" href="#javascript-concurrency-model" id="javascript-concurrency-model">JavaScript Concurrency Model</a></h2>
-<p>The JS concurrency model (hosted by the HTML Scripting SPEC) is based around the concepts of Agent, Event Loop, Realm, Thread, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises">Promises</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Timeouts and Intervals</a>, etc., and should be studied with HTML concepts like Event Loop, Window, Worker, Task, Microtask, Worklet, etc. The knowledge of these concepts is not necessary to build web apps, but will help us in understanding how work gets scheduled and executed in a web app.</p>
+<p>The JS concurrency model (hosted by the HTML Scripting Specification) is based around the concepts of Agent, Event Loop, Realm, Thread, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises">Promises</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Timeouts and Intervals</a>, etc., and should be studied with HTML concepts like Event Loop, Window, Worker, Task, Microtask, Worklet, etc. The knowledge of these concepts is not necessary to build web apps, but will help us in understanding how work gets scheduled and executed in a web app.</p>
 <blockquote>
-<p>Conceptually, at a higher level, a JS run-time has a stack, a heap, and a queue associated with it. Several run-times may need to work together for a single app e.g. a web worker has its own stack, heap, and queue. Different runtime communicate using the postMessage() method that adds a message to the queue of the other run-time if the latter has a event listener for the <em>'message'</em> events <sup><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">07</a></sup>. The JS run-time maintains a queue of messages and processes them in order till the queue is empty. Every message/event has a function or handler associated with it which the run-time calls to process the message/event. Each message is processed completely before the next message is handled. A meesage gets added to the queue when a event occurs and the associated event listener adds a message to the queue. E.g. The function <em>setTimeout()</em> adds a message to the queue after an user defined delay (default is 0). The delay defines when the message will be queued not when the message will be processed, as there may be pending messages in the queue before this message.</p>
+<p>Conceptually, at a higher level, a JS runtime has a stack, a heap, and a queue associated with it. Several runtimes may need to work together for a single app: a web worker has its own stack, heap, and queue. Different runtimes communicate using the <em>postMessage</em> method that adds a message to the queue of the other runtime if the latter has an event listener for the <em>'message'</em> events <sup><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">07</a></sup>. The JS runtime maintains a queue of messages and processes them in order till the queue is empty. Every message/event has a function or handler associated with it that the runtime calls to process the message/event. Each message is processed completely before the next message is handled. A message gets added to the queue when an event occurs and the associated event listener adds the message to the queue, e.g., the function <em>setTimeout</em> adds a message to the queue after an user-defined delay (default is 0). The delay defines when the message will be queued, not when the message will be processed, as there may be pending messages in the queue before this message.</p>
 </blockquote>
-<p>From an implementation point of view, a JS run-time engine (in an user agent, e.g. a web browser) keeps a set of <em>agents</em> that have unique <em>event loops</em>. <em>Windows</em> and <em>Workers</em> could share same <em>agent</em> (and its <em>event loop</em>) to schedule <em>tasks</em>. Before running a <em>Worker</em> the engine obtains an <em>agent</em> based on spec-defined algorithms. Before queuing a <em>task</em> the engine deduces the <em>agent</em> and the <em>event loop</em> based on spec-define algorithms. An <em>agent</em> is driven by an <em>event loop</em> which is responsible for:</p>
+<p>From an implementation point of view, a JS runtime engine (in a user-agent, e.g., a web browser) keeps a set of <em>agents</em> that have unique <em>event loops</em>. <em>Windows</em> and <em>Workers</em> could share same <em>agent</em> (and its <em>event loop</em>) to schedule <em>tasks</em>. Before running a <em>Worker</em>, the engine obtains an <em>agent</em> based on spec-defined algorithms. Before queuing a <em>task</em> the engine deduces the <em>agent</em> and the <em>event loop</em> based on spec-define algorithms. An <em>agent</em> is driven by an <em>event loop</em> which is responsible for:</p>
 <ul>
 <li>executing the code</li>
 <li>collecting and processing events/messages</li>
 <li>executing scheduled/queued tasks</li>
 </ul>
-<p>During the continuous iteration of the <em>event loop</em>, the <em>event loop</em> first picks one <em>task queue</em> (with at least one runnable <em>task</em>) from its <em>task queues</em> in an implementation-defined manner and then follows the spec-defined steps to schedule <em>tasks</em> and update rendering (if applicable) <sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">20</a></sup>.</p>
+<p>During the continuous iteration of the <em>event loop</em>, the <em>event loop</em> first picks one <em>task queue</em> (with at least one <em>runnable task</em>) from its <em>task queues</em> in an implementation-defined manner and then follows the spec-defined steps to schedule <em>tasks</em> and update rendering (if applicable) <sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">20</a></sup>.</p>
 <p><strong>Agent:</strong> An agent comprises a set of ECMAScript <a href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-execution-contexts">execution contexts</a>, an execution context stack, a running execution context, an Agent Record, and an executing thread. Except for the executing thread, the constituents of an agent belong exclusively to that agent<sup><a href="https://tc39.es/ecma262/#sec-agents">10</a></sup>.</p>
 <ul>
 <li>&quot;Conceptually, the agent concept is an architecture-independent, idealized &quot;thread&quot; in which JavaScript code runs. Such code can involve multiple globals/realms that can synchronously access each other, and thus needs to run in a single execution thread<sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#scripting">08</a></sup>. Two Window or Worker objects having the same agent does not indicate they can directly access all objects created in each other's realms&quot;</li>
@@ -235,14 +235,14 @@
 </ul>
 <p><strong>Agent Cluster:</strong> &quot;Conceptually, the agent cluster concept is an architecture-independent, idealized &quot;process boundary&quot; that groups together multiple &quot;threads&quot; (agents).<sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-agent-cluster-formalism">19</a></sup>&quot;</p>
 <ul>
-<li>The agent cluster concept is crucial for defining the JavaScript memory model, and in particular among which agents the backing data of SharedArrayBuffer objects can be shared (there are additional restrictions on data sharing e.g. cross-origin isolation, etc.)<sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-agent-cluster-formalism">19</a></sup>.</li>
+<li>The agent cluster concept is crucial for defining the JavaScript memory model, and in particular among which agents the backing data of SharedArrayBuffer objects can be shared (there are additional restrictions on data sharing, e.g., cross-origin isolation, etc.)<sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-agent-cluster-formalism">19</a></sup>.</li>
 </ul>
 <p><strong>Event Loop</strong>: Every agent has an associated event loop that is unique to it. The work performed by that agent is driven by this event loop.</p>
 <ul>
 <li>There are different kinds of event loops based on the agent. The event loop of a similar-origin window agent is a <code>window event loop</code>, the event loop of a dedicated worker agent, shared worker agent, or service worker agent is a <code>worker event loop</code>, and the event loop of worklet agent is a <code>worklet event loop</code>.</li>
 <li>Event loop could correspond to single implementation <code>thread</code> or multiple worker event loops could be cooperatively scheduled in a single <code>thread</code>.</li>
 <li>An event loop has multiple <code>task queues</code> and a <code>microtask queue</code>; a <code>microtask queue</code> is different from a <code>task queue</code>.</li>
-<li>An event loop guarantees that tasks in a task queue from the same source (e.g. DOM manipulation task source, user interaction task source, networking task source, etc.) are always executed in order, but the event loop could give preference to tasks from different sources. E.g. a user agent could have one interaction task queue for mouse and key events, and another for rest of the events, then it could give preference to the interaction task queue resulting in a responsive interface <sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loops">09</a></sup>.</li>
+<li>An event loop guarantees that tasks in a task queue from the same source (e.g., DOM manipulation task source, user interaction task source, networking task source, etc.) are always executed in order, but the event loop could give preference to tasks from different sources, e.g., a user agent could have one interaction task queue for mouse and key events, and another for the rest of the events, then it could give preference to the interaction task queue resulting in a responsive interface <sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loops">09</a></sup>.</li>
 </ul>
 <p><strong>Task</strong>: Tasks encapsulate algorithms that are responsible for work such as: Events, Parsing, Callbacks, Fetch, etc <sup><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loops">09</a></sup>.</p>
 <p><strong>Task vs Microtask:</strong></p>
@@ -251,21 +251,21 @@
 <li>The runtime executes each task that is in the task queue at the moment a new iteration of the event loop begins. Tasks added to the queue after the current iteration begins will not run until the next iteration.</li>
 <li>A microtask is scheduled using the <code>queueMicrotask()</code> method exposed on the <code>Window</code> and <code>Worker</code> interface.</li>
 <li><code>queueMicrotask()</code> queues a microtask to run after the current task has completed its work and when there is no other code waiting to be run before control of the execution context is returned to the event loop. If a microtask adds more microtasks to the queue by calling <code>queueMicrotask()</code>, those newly-added microtasks execute before the next iteration of the event loop begins.</li>
-<li>The importance of microtasks comes in its ability to perform tasks asynchronously but in a specific order. Microtask provides a finer degree of control to schedule code to run before the next iteration of the event loop begins <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth">11</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide">12</a></sup>.</li>
-<li><code>queueMicrotask()</code> is an advanced features that could block your app if not used carefully, like a microtasks keep on scheduling more microtasks. Refer to this <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide">usage guide</a> for details on when and how to use microtasks properly.</li>
+<li>The importance of microtasks comes in their ability to perform tasks asynchronously but in a specific order. Microtask provides a finer degree of control to schedule code to run before the next iteration of the event loop begins <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth">11</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide">12</a></sup>.</li>
+<li><code>queueMicrotask()</code> is an advanced feature that could block your app if not used carefully, like a microtask keeps on scheduling more microtasks. Refer to this <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide">usage guide</a> for details on when and how to use microtasks properly.</li>
 </ul>
 <blockquote>
 <p>When a JS code fragment runs it runs inside a JS <a href="https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-execution-contexts">execution context</a> (global, function, or eval). As each context is created, it is placed on the execution context stack. When it exits, the context is removed from the context stack <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth">11</a></sup>.</p>
 </blockquote>
 <h2><a class="header" href="#es-module-ecmascript-module" id="es-module-ecmascript-module">ES Module (ECMAScript Module)</a></h2>
-<p>ES Module (JS Module) is a JS feature that allows to organize application or library code in reusable building blocks, they also provide features to write clean and performant code. A module is just a file (usually with .js or .mjs extension) with private content by default unless exported, it may contain a class or an ensemble of functions.</p>
+<p>ES Module (JS Module) is a JS feature that allows organizing an application or library code in reusable building blocks, that also provides features to write clean and performant code. A module is just a file (usually with .js or .mjs extension) with private content by default unless exported. It may contain a class or an ensemble of functions.</p>
 <p>Some properties of modules those are relevant while using them in hybrid applications:</p>
 <ul>
-<li>In a browser environment a script is treated as a module using the attribute <code>&lt;script type=&quot;module&quot;&gt;</code></li>
+<li>In a browser environment, a script is treated as a module using the attribute <code>&lt;script type=&quot;module&quot;&gt;</code></li>
 <li>Each module has its own top-level scope, functions, class, var, let, or const in a module are private or local, by default i.e. they don't get added to the global scope (modules have a lexical top-level scope<sup><a href="https://v8.dev/features/modules">02</a></sup>). This applies to inline modules in HTML documents defined with <code>&lt;script type=&quot;module&quot;&gt; ... &lt;/script&gt;</code> blocks.</li>
-<li>The <code>this</code> within modules does not refer to the global <code>this</code>, and instead is <code>undefined</code>. However, to make a variable global one could use the <code>window</code> property e.g. <code>window.myVar = &quot;name&quot;</code>.</li>
+<li>The <code>this</code> within modules does not refer to the global <code>this</code>, and instead is <code>undefined</code>. However, to make a variable global, one could use the <code>window</code> property, e.g., <code>window.myVar = &quot;name&quot;</code>.</li>
 <li>Modules have <code>strict mode</code> enabled by default.</li>
-<li>Modules can <code>export</code> and <code>import</code> functionalities between them. Modules allow default exports those could be imported with any name. We could rename both imports and exports.
+<li>Modules can <code>export</code> and <code>import</code> functionalities between them. Modules allow default exports that could be imported with any name. We could rename both imports and exports.
 <pre><code class="language-js">/// Pseudocode ///
 
 import featureOne from &quot;my-feature-a.js&quot;; // default export
@@ -280,7 +280,7 @@ export {
 }; // rename export
 </code></pre>
 </li>
-<li>A module is evaluated only once during the first import and not multiple times if the same module is imported at multiple places. This behavior is important in doing initiaization work during the first import.
+<li>A module is evaluated only once during the first import and not multiple times if the same module is imported at multiple places. This behavior is important in doing initialization work during the first import.
 <pre><code class="language-js">/// Pseudocode ///
 
 /// my_module.js ///
@@ -292,7 +292,7 @@ import msg from &quot;./my_module.js&quot;; // log is printed to console
 import msg from &quot;./my_module.js&quot;; // log is not printed to console as module is executed only once 
 </code></pre>
 </li>
-<li>The imported features are live-bindings i.e. both import and export point to the same memory. Change in the feature value is reflected in the modules importing that variable. This behavior is important in creating resources those could be shared among different importing modules.
+<li>The imported features are live-bindings i.e., both import and export point to the same memory. Change in the feature value is reflected in the modules importing that variable. This behavior is useful in creating resources that different importing modules could share.
 <pre><code class="language-js">/// Pseudocode ///
 
 /// my_module.js ///
@@ -308,11 +308,11 @@ incrementor.doIncrement();
 console.log(incrementor.getValue()); // prints 12
 </code></pre>
 </li>
-<li>Module scripts are always deferred and are downloaded in parallel with other resources. Even though they are deferred the relative order among the different modules in maintained.</li>
-<li><code>async</code> works the same way for inline and external scripts, the script is downloaded without blocking the HTML parser and is executed as soon as possible without any guarantee on order.</li>
-<li>Module scripts are executed only after the entire HTML is loaded including the elements below them in the HTML documents, hence they always see the entire HTML document.</li>
-<li>Module scripts and their dependencies are fetched using CORS i.e. the remote server of any cross-origin module script must supply a proper header e.g. Access-Control-Allow-Origin.</li>
-<li>Modules support both static and dynamic import. In static import the entire module graph needs to be downloaded and executed before main code could run. Dynamic import is used to download a module on-demand and allows lazy-loading e.g. import from inside an async function based on some condition when required.</li>
+<li>Module scripts are always deferred and are downloaded in parallel with other resources. Though they are deferred, the relative order among the different modules is maintained.</li>
+<li><code>async</code> works the same way for inline and external scripts. The script is downloaded without blocking the HTML parser and is executed as soon as possible without any guarantee on order.</li>
+<li>Execution of Module scripts starts only after the entire HTML is loaded, including the elements below them in the HTML documents, hence they always see the entire HTML document.</li>
+<li>Module scripts and their dependencies are fetched using CORS i.e. the remote server of any cross-origin module script must supply a proper header, e.g., Access-Control-Allow-Origin.</li>
+<li>Modules support both static and dynamic import. In static import the entire module graph needs to be downloaded and executed before the main code can run. Dynamic import is used to download a module on-demand and allows lazy-loading, e.g., import from inside an async function based on some condition when required.</li>
 <li>Module support top-level await that allows modules to act like large async functions.</li>
 <li>An imported module is parsed to generate a module record which then is used to create a module instance (code + state). Specifically, a module loading process has three steps: construction (download, parse, create module records), instantiation (prepare memory for data and make import and export point to them) or linking, and evaluation (execute code to fill the prepared memory and generate other side effects) <sup><a href="https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/">04</a></sup>.</li>
 <li>When we run a module containing an import declaration, the modules it imports are loaded first, then each module body is executed in a depth-first traversal of the dependency graph, avoiding cycles by skipping anything already executed<sup><a href="https://hacks.mozilla.org/2015/08/es6-in-depth-modules/">03</a></sup>. It is important to note that loading behavior along with bundling is not standardized yet and is upto the implementation.</li>
@@ -322,21 +322,21 @@ console.log(incrementor.getValue()); // prints 12
 </blockquote>
 <h2><a class="header" href="#webassembly-module" id="webassembly-module">WebAssembly Module</a></h2>
 <p>WebAssembly is not yet integrated with <code>&lt;script type='module'&gt;</code> or <code>import</code> statements. Currently, WebAssembly is loaded and compiled by JS, though there are future plans for WebAssembly/ES module integration <sup><a href="https://github.com/WebAssembly/esm-integration/tree/main/proposals/esm-integration">16</a></sup>. 
-WebAssembly <a href="https://webassembly.github.io/spec/core/syntax/types.html">core specification</a> supports only i32, i64, f32, and f64 types, this imposes limitations on directly using advanced types (e.g. Strings, Class, etc.) in the interfacing API. Specific toolchains have been developed to get around these limitations.</p>
-<p>To emebed WebAssembly within any host application three set of APIs are available: <a href="https://webassembly.github.io/spec/js-api/index.html">JavaScript API</a> (access Wasm within JS), <a href="https://webassembly.github.io/spec/web-api/index.html">Web API</a> (Extension to JS API for web browser), and <a href="https://github.com/WebAssembly/WASI/blob/main/phases/snapshot/docs.md">WASI API</a> (to run Wasm outside web). When using WebAssembly in a hybrid app alongside JS we need to understand two distinctions:</p>
+WebAssembly <a href="https://webassembly.github.io/spec/core/syntax/types.html">core specification</a> supports only <em>i32</em>, <em>i64</em>, <em>f32</em>, and <em>f64</em> types; this imposes limitations on directly using advanced types (e.g., Strings, Class, etc.) in the interfacing API. Specific toolchains exist to get around these limitations.</p>
+<p>To embed WebAssembly within any host application, three sets of APIs are available: <a href="https://webassembly.github.io/spec/js-api/index.html">JavaScript API</a> (access Wasm within JS), <a href="https://webassembly.github.io/spec/web-api/index.html">Web API</a> (Extension to JS API for web browser), and <a href="https://github.com/WebAssembly/WASI/blob/main/phases/snapshot/docs.md">WASI API</a> (to run Wasm outside web). When using WebAssembly in a hybrid app alongside JS we need to understand two distinctions:</p>
 <ul>
 <li>We could integrate Wasm by interacting with the JS and Web API <sup><a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running">13</a>, <a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Using_the_JavaScript_API">14</a></sup>, or</li>
 <li>We could use JS-glue code generated by toolchains <sup><a href="https://rustwasm.github.io/docs/wasm-bindgen/contributing/design/index.html">15</a>, <a href="https://emscripten.org/docs/api_reference/preamble.js.html">17</a></sup>, where the app interacts with the JS-glue and the JS-glue internally uses the JS/Web API.</li>
 </ul>
 <h3><a class="header" href="#-1" id="-1"></a></h3>
 <p><strong>JavaScript and Web API Approach:</strong></p>
-<p>Older method for directly integrating using the JS APIs e.g.<code>WebAssembly.compile</code> and <code>WebAssembly.instantiate</code> involves three steps:</p>
+<p>An older method for directly integrating using the JS APIs, e.g. <code>WebAssembly.compile</code> and <code>WebAssembly.instantiate</code>, involves three steps:</p>
 <ul>
 <li>Get the .wasm bytes into a typed array or ArrayBuffer</li>
 <li>Compile the bytes into a <code>WebAssembly.Module</code></li>
 <li>Instantiate the <code>WebAssembly.Module</code> with imports to get the callable exports.</li>
 </ul>
-<p>The recommended approach, when available, is to use the newer Web APIs  <code>instantiateStreaming</code> and <code>compileStreaming</code>. The newer methods perform their actions directly on the raw stream of bytes coming from the network, so no need for creating an intermediate ArrayBuffer.</p>
+<p>The recommended approach, when available, is to use the newer Web APIs <code>instantiateStreaming</code> and <code>compileStreaming</code>. The newer methods perform their actions directly on the raw stream of bytes coming from the network, so no need for creating an intermediate ArrayBuffer.</p>
 <p><strong>Example 01:</strong> Instantiate a <code>WebAssembly.Module</code> using <code>instantiateStreaming</code>:</p>
 <pre><code class="language-js">/// Pseudocode ///
 
@@ -356,7 +356,7 @@ console.log(doWork(991));
 // access the buffer contents of an exported memory:
 var i32 = new Uint32Array(instance.exports.memory.buffer);
 </code></pre>
-<p><strong>Example 02:</strong> Instantiate a <code>WebAssembly.Module</code> using <code>compileStreaming</code>. This approach has the advantages that the compiled module could be stored and then passed on to different <code>Workers</code> for parallel computation and we could do additional work on the module before instantiation:</p>
+<p><strong>Example 02:</strong> Instantiate a <code>WebAssembly.Module</code> using <code>compileStreaming</code>. This approach has the advantage that the compiled module could be stored and then passed on to different <code>Workers</code> for parallel computation and, we could do additional work on the module before instantiation:</p>
 <pre><code class="language-js">/// Pseudocode ///
 
 var worker = new Worker(&quot;compute_worker.js&quot;);
@@ -376,7 +376,7 @@ console.log(table.get(0)());
 // pass compiled module to worker that will create its own instance
 worker.postMessage(module);
 </code></pre>
-<p><strong>Example 03:</strong> Here we provide the linear memory to the module. This approach has the advantages that JS could prepare the memory in advance concurrently with module compilation and this also allows the same memory to be used by different module instances.</p>
+<p><strong>Example 03:</strong> Here, we provide the linear memory to the module. This approach has the advantage that JS could prepare the memory in advance concurrently with module compilation and, this also allows different module instances to use the same memory.</p>
 <pre><code class="language-js">/// Pseudocode ///
 
 // The unit of initial, maximum, and grow is WebAssembly pages (fixed to 64KB in size).
@@ -409,25 +409,25 @@ console.log(doAdd(0, 10));
 <li>Emscripten frontend compiler <code>emcc</code> provides multiple options to generates packages.
 <ul>
 <li>These packages usually contain a <code>*.wasm</code> and a <code>*.js</code> files. The output <code>js</code> file contains the JS-glue code.</li>
-<li>This JS-glue contains <code>preamble.js</code> (contains utility and setup code, and APIs for intefacing with the compiled C code), the compiled code, and then the <code>postamble</code> (code to connect things and running the applicatio) <sup><a href="https://emscripten.org/docs/api_reference/preamble.js.html">17</a></sup>.</li>
+<li>This JS-glue contains <code>preamble.js</code> (contains utility and setup code, and APIs for interfacing with the compiled C code), the compiled code, and then the <code>postamble</code> (code to connect things and running the applicatio) <sup><a href="https://emscripten.org/docs/api_reference/preamble.js.html">17</a></sup>.</li>
 <li>The JS-glue interacts with the WebAssembly module and uses a global JS-object <code>Module</code> that is configurable <sup><a href="https://emscripten.org/docs/api_reference/module.html">18</a></sup>.</li>
 </ul>
 </li>
-<li>Similarly, <code>wasm-bindgen</code> (along with <code>js-sys</code> ans <code>web-sys</code> crates) provides mutiple tools (<code>#[wasm_bindgen]</code> macro, etc.) to interface with Rust code and generate packages.
+<li>Similarly, <code>wasm-bindgen</code> (along with <code>js-sys</code> and <code>web-sys</code> crates) provides multiple tools (<code>#[wasm_bindgen]</code> macro, etc.) to interface with Rust code and generate packages.
 <ul>
-<li>These packages usually contain a <code>*_bg.wasm</code> and a <code>*.js</code>files.</li>
+<li>These packages usually contain a <code>*_bg.wasm</code> and a <code>*.js</code> files.</li>
 <li>The <code>js</code> file contains the JS-glue code, and the <code>*_bg.wasm</code> is the postprocessed version of the original <code>.wasm</code> file generated by <code>rustc</code> <sup><a href="https://rustwasm.github.io/docs/wasm-bindgen/contributing/design/index.html">15</a></sup>.</li>
 </ul>
 </li>
 </ul>
 <blockquote>
-<p>The size of the glue-code may depend on the interfacing API. Some tools add it only if WebAssembly spec doesn't directly supports types or features. As the WebAssembly spec evolves the size of the glue-code may reduce. There is a WebAssembly <a href="https://github.com/WebAssembly/interface-types">host-binding</a> proposal to introduce advanced types.</p>
+<p>The size of the glue-code may depend on the interfacing API. Some tools add it only if WebAssembly specification doesn't directly support the types or the features. As the WebAssembly specification evolves, the size of the glue-code may reduce. There is a WebAssembly <a href="https://github.com/WebAssembly/interface-types">host-binding</a> proposal to introduce advanced types.</p>
 </blockquote>
 <h2><a class="header" href="#safe-message-passing-and-data-access" id="safe-message-passing-and-data-access">Safe Message Passing and Data Access:</a></h2>
-<p>In this section we would discuss the various options or patterns available for cross-context communication i.e. passing or accessing data/messages among different web app components. A web app component could be a JS module, a Wasm module instance, a JS module/script running in a Worker, a Wasm module instance running in a Worker, etc. This is not an exhaustive list of all the possible options and is dedicated mostly to client side message passing and data exchange.</p>
-<p>In an app we could have a Mediator to hold common resources and provide them to different components. The Mediator could also orchestrate the messages or events between different components, it receives events/messages from components and broadcasts them to the subscribers. Special attention should be provided if components are executing in different threads<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">29</a></sup>. Having a common mediator is not mandatory, depending on the app components could talk directly to each other.</p>
+<p>In this section, we will discuss the various options or patterns available for cross-context communications, i.e., message passing or data access among different web app components. A web app component could be a JS module, a Wasm module instance, a JS module/script running in a Worker, a Wasm module instance running in a Worker, etc. This is not an exhaustive list of the possible options and is dedicated to client-side message passing and data exchange.</p>
+<p>In an app, we could have a Mediator-object holding the common resources and provide them to different components. The Mediator could also orchestrate the messages or events between different components. It receives events/messages from components and broadcasts them to the subscribers. Special attention should be provided if components are executing in different threads<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">29</a></sup>. Having a common Mediator is not mandatory as depending on the app the components can talk directly to each other, like in the <a href="https://en.wikipedia.org/wiki/Actor_model">Actor model</a> where specific Actors could own specific resources and the rest of the Actors directly pass messages to the resource Actor.</p>
 <p>Below are certain APIs and resources available to an app to achieve safe, stable, and performant data/message exchange between different web app components (windows/tabs, iframes, web workers, service workers, etc.):</p>
-<p><strong>Shared Memory:</strong> <code>SharedArrayBuffer</code> is a JS object to share a memory space across threads and could be used to access data from multiple workers. A mediator could broadcast messages/actions to workers and workers could read and write to the shared-memory. The mediator could also keep track of all the shared memory buffers in use. It has additional limitations and is only available if <a href="https://developer.chrome.com/blog/enabling-shared-array-buffer/">cross-origin isolation</a> is supported (check for <code>self.crossOriginIsolated</code> in Window and Worker context)<sup><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes">22</a></sup>.</p>
+<p><strong>Shared Memory:</strong> <code>SharedArrayBuffer</code> is a JS object to share a memory space across threads and could be used to access data from multiple workers. A mediator could broadcast messages/actions to workers, and workers could read and write to the shared memory. The Mediator could also keep track of all the shared memory buffers in use. It has additional limitations and is only available if <a href="https://developer.chrome.com/blog/enabling-shared-array-buffer/">cross-origin isolation</a> is supported (check for <code>self.crossOriginIsolated</code> in Window and Worker context)<sup><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/Planned_changes">22</a></sup>.</p>
 <pre><code class="language-js">/// Pseudocode ///
 
 /// main.js ///
@@ -453,7 +453,7 @@ onmessage = function(e) {
 }
 
 </code></pre>
-<p><strong>WebAssembly Shared Memory:</strong> The WebAssembly <a href="https://github.com/WebAssembly/threads/blob/main/proposals/threads/Overview.md">Threading proposal</a> allows for the <code>WebAssembly.Memory</code> to be shared. In this case the buffer of the <code>WebAssembly.Memory</code> is backed by a <code>SharedArrayBuffer</code> and could be used the same way as a <code>SharedMemoryBuffer</code>.</p>
+<p><strong>WebAssembly Shared Memory:</strong> The WebAssembly <a href="https://github.com/WebAssembly/threads/blob/main/proposals/threads/Overview.md">Threading proposal</a> allows for the <code>WebAssembly.Memory</code> to be shared. In this case, the buffer of the <code>WebAssembly.Memory</code> is backed by a <code>SharedArrayBuffer</code> and could be used the same way as a <code>SharedMemoryBuffer</code>.</p>
 <pre><code class="language-js">/// Pseudocode ///
 
 /// main.js ///
@@ -480,7 +480,7 @@ onmessage = function(e) {
     instance.exports.unlockMutex(mutexAddr);
 }
 </code></pre>
-<p><strong>Window/Worker.postMessage:</strong> The <code>postMessage</code> method available on Window and Worker objects could be used in three different ways: <em>copy</em>, <em>transfer</em>, and <em>share</em>. The <code>Worker.postMessage</code> method delegates to the <code>MessagePort.postMessage</code> method, which adds a task on the event loop corresponding to the receiving <code>MessagePort</code><sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage">23</a></sup>. Depending upon the application the Mediator object could keep large resources and then provide them to workers on-demand through <em>transfer</em> not <em>copy</em>, as <em>transfer</em> is significantly faster than <em>copy</em> in case of large resources<sup><a href="https://developers.google.com/web/updates/2011/12/Transferable-Objects-Lightning-Fast">28</a></sup>. The workers could later <em>transfer</em> the resource back to the mediator when they are done.</p>
+<p><strong>Window/Worker.postMessage:</strong> The <code>postMessage</code> method available on Window and Worker objects could be used in three different ways: <em>copy</em>, <em>transfer</em>, and <em>share</em>. The <code>Worker.postMessage</code> method delegates to the <code>MessagePort.postMessage</code> method, which adds a task on the event loop corresponding to the receiving <code>MessagePort</code><sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage">23</a></sup>. Depending upon the app the Mediator object could keep large resources and then provide them to workers on-demand through <em>transfer</em> not <em>copy</em>, as <em>transfer</em> is significantly faster than <em>copy</em> in case of large resources<sup><a href="https://developers.google.com/web/updates/2011/12/Transferable-Objects-Lightning-Fast">28</a></sup>. The workers could later <em>transfer</em> the resource back to the Mediator object after using the resource.</p>
 <pre><code class="language-js">/// Pseudocode ///
 
 /// main.js ///
@@ -527,7 +527,7 @@ onmessage = function(e) {
 // to immediately terminate a worker from the main thread
 worker.terminate();
 </code></pre>
-<p><strong>Channel Messaging API:</strong> The Channel Messaging API provides two-way one-to-one message channels <code>MessageChannel</code> allowing two different scripts running in different contexts of the same origin to communicate<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API">24</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API/Using_channel_messaging">25</a></sup>. The message channel has a single port <code>MessagePort</code> at each end (<code>MessageChannel.port1</code> and <code>MessageChannel.port2</code>). This approach has the advantage of dedicated channels for specific messages, thereby a mapping between requests and responses. In a production environment make sure to check the <code>origin</code> and <code>source</code> properties of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent"><code>MessageEvent</code></a> that received by the event listerner for <code>onmessage</code>.</p>
+<p><strong>Channel Messaging API:</strong> The Channel Messaging API provides two-way one-to-one message channels (<code>MessageChannel</code>), allowing two different scripts running in different contexts of the same-origin to communicate<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API">24</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API/Using_channel_messaging">25</a></sup>. The message channel has a single port (<code>MessagePort</code>) at each end (<code>MessageChannel.port1</code> and <code>MessageChannel.port2</code>). This has the advantage of dedicated channels for specific messages, thereby a mapping between requests and responses. In a production environment, make sure to check the <code>origin</code> and <code>source</code> properties of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent"><code>MessageEvent</code></a> received by the event listener for <code>onmessage</code>.</p>
 <pre><code class="language-js">/// main.js ///
 const worker = new Worker(&quot;worker.js&quot;);
 const channel = new MessageChannel();
@@ -554,7 +554,7 @@ function onMessageFromChannel(e) {
 }
 
 </code></pre>
-<p><strong>Broadcast Channel API:</strong> The Broadcast Channel API provides a one-to-many broadcast model or a message bus model for a web app and allows same-origin scripts to send messages to different browsing contexts (windows/tabs, iframes, web workers, and service workers.). Broascast channels are named channels, so they have the advantage that the participants don't have to maintain references to other participants, every participant could subscribe using the name of the channel and they would receive messages from the channel when any other participant posts to it <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API">26</a></sup>.</p>
+<p><strong>Broadcast Channel API:</strong> The Broadcast Channel API provides a one-to-many broadcast model or a message bus model for a web app and allows same-origin scripts to send messages to different browsing contexts (windows/tabs, iframes, web workers, and service workers.). Broadcast channels are named channels, so they have the advantage that the participants don't have to maintain references to other participants. Every participant could subscribe using the name of the channel, and they would receive messages from the channel when any other participant posts to it <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API">26</a></sup>.</p>
 <pre><code class="language-js">/// main.js ///
 // Connection to a broadcast channel
 const bc = new BroadcastChannel('app_channel');
@@ -578,7 +578,7 @@ bc.close();
 if ('BroadcastChannel' in self) { /* BroadcastChannel API is supported. */ }
 
 </code></pre>
-<p><strong>Shared Worker API:</strong> A <code>SharedWorker</code> is a worker that can be accessed from different browsing contexts (windows, iframes, workers) of the same origin (same protocol, host and port). A shared worker is different from a dedicated worker which can be accessed only from the owner that spawned it. <code>SharedWorker.port</code> returns a <code>MessagePort</code> object used to communicate with and control the shared worker<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker">27</a></sup>. A shared worker has the advantage that it could be used as a common job queue that could then broadcast the result to all the participants. The shared worker could also have sub-workers of its own to distribute the tasks, thereby acting as a common job system.</p>
+<p><strong>Shared Worker API:</strong> A <code>SharedWorker</code> is a <em>worker</em> that different browsing contexts (windows, iframes, workers) of the same origin (same protocol, host, and port) can access. A shared worker is different from a dedicated worker that only the owner that spawned it can access. <code>SharedWorker.port</code> returns a <code>MessagePort</code> object used to communicate with and control the shared worker<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker">27</a></sup>. A shared worker has the advantage that it could be used as a common job queue that could then broadcast the result to all the participants. The shared worker could also have a set of sub-workers to distribute the tasks, thereby acting as a common job system.</p>
 <pre><code class="language-js">/// main.js ///
 const worker = new SharedWorker(&quot;shared-worker.js&quot;);
 worker.port.onmessage = function(e) {
@@ -604,12 +604,12 @@ onconnect = function(e) {
     }
 }
 </code></pre>
-<p><strong>Web Storage API, IndexedDB API and Service Worker API:</strong> Another pattern that involves Web Storage, IndexedDB and Service Workers provides persistent task and message queue, and optional background sync over network. This approach has an advantage when am app would like its message queues to be persistent e.g. offline support in a web app, or provide a single interface to expensive-to-calculate data. A service worker is a worker associated with an origin and path, that intercepts, modifies, and caches navigation and resource requests<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">30</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers">31</a></sup>. It is designed to be completely async and only run over HTTPS, for security reasons. Multiple browsing contexts (e.g. pages, workers, etc.) can be associated with the same <code>ServiceWorker</code> object.
-IndexedDB is a transactional and JS-based object-oriented database system that lets you store and retrieve objects that are indexed with a key <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">32</a></sup>. The service worker could use either the web storage or the IndexedDB as its persistent store.</p>
-<p>Here are links to few examples those are built around this approach:</p>
+<p><strong>Web Storage API, IndexedDB API, and Service Worker API:</strong> Another pattern that involves Web Storage, IndexedDB, and Service Workers provides persistent task and message queue and optional background sync over network. This approach has an advantage when an app would like its message queues to be persistent, e.g., offline support in a web app, or provide a single interface to expensive-to-calculate data. A service worker is a worker associated with an origin and a path; that intercepts, modifies, and caches navigation and resource requests<sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">30</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers">31</a></sup>. It is designed to be fully async and run only over HTTPS (for security reasons). Multiple browsing contexts (e.g., pages, workers, etc.) can be associated with the same <code>ServiceWorker</code> object.
+IndexedDB is a transactional and JS-based object-oriented database system that lets you store and retrieve objects indexed with a key <sup><a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB">32</a></sup>. The service worker could use either the Web Storage or the IndexedDB as its persistent store.</p>
+<p>Here are links to few examples built around this approach:</p>
 <ul>
 <li><a href="https://serviceworke.rs/message-relay.html">Message Relay: Use a service worker to relay messages between pages</a></li>
-<li><a href="https://serviceworke.rs/request-deferrer.html">Request Deferrer: An outbox-like buffer to perform the operations once connection is regained</a></li>
+<li><a href="https://serviceworke.rs/request-deferrer.html">Request Deferrer: An outbox-like buffer to perform the operations once regaining the connection</a></li>
 </ul>
 <pre><code class="language-js">/// main.js ///
 // check for features
@@ -617,7 +617,7 @@ if (window.indexedDB) { /* stable version of IndexedDB supported*/ }
 if ('serviceWorker' in navigator) { /* service worker supported*/ }
 </code></pre>
 <h2><a class="header" href="#-3" id="-3"></a></h2>
-<p>Here we discussed few concepts those should be studied together and are helpful while making design decisions for Hybrid Web Applications.</p>
+<p>Here we discussed few concepts that should be studied together and are helpful while making design decisions for Hybrid Web Applications.</p>
 <h4><a class="header" href="#references" id="references">References:</a></h4>
 <ul>
 <li><small> <a href="https://javascript.info/modules-intro">Modules: Introduction</a> </small></li>
@@ -659,6 +659,7 @@ if ('serviceWorker' in navigator) { /* service worker supported*/ }
 <li><small> <a href="https://developer.chrome.com/blog/wasm-debugging-2020/">Chrome: Debugging WebAssembly</a> </small></li>
 <li><small> <a href="https://developer.mozilla.org/en-US/docs/Tools/Debugger">The Firefox JavaScript Debugger</a> </small></li>
 <li><small> <a href="https://developers.google.com/web/updates/2016/09/broadcastchannel">BroadcastChannel API: A Message Bus for the Web</a> </small></li>
+<li><small> <a href="https://hacks.mozilla.org/2018/01/making-webassembly-even-faster-firefoxs-new-streaming-and-tiering-compiler/">Making WebAssembly even Faster</a> </small></li>
 </ul>
 <h2><a class="header" href="#-4" id="-4"></a></h2>
 <blockquote>
